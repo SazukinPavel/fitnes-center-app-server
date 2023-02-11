@@ -6,11 +6,14 @@ import {
   BeforeUpdate,
 } from 'typeorm';
 import { hash } from 'bcryptjs';
+import Role from '../types/Role';
 
 @Entity()
 export abstract class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  readonly role: Role;
 
   @Column()
   fio: string;
@@ -18,7 +21,7 @@ export abstract class User {
   @Column()
   login: string;
 
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @BeforeInsert()

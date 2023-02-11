@@ -1,11 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import AddManagerDto from './dto/AddManager.dto';
-import UpdateManagerDto from './dto/UpdateManager.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import Manager from '../entities/manager.entity';
 
 @Injectable()
 export class ManagersService {
-  protected managerRepository: Repository<any>;
+  constructor(
+    @InjectRepository(Manager) private managerRepository: Repository<Manager>,
+  ) {}
+
+  findByLogin(login: string) {
+    return this.managerRepository.findOne({ where: { login } });
+  }
 
   add(addManagerDto: AddManagerDto) {
     const user = this.managerRepository.create({ ...addManagerDto });
