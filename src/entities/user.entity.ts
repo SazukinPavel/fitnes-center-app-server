@@ -8,18 +8,12 @@ import {
 import { hash } from 'bcryptjs';
 
 @Entity()
-export class User {
+export abstract class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  firstName: string;
-
-  @Column()
-  secondName: string;
-
-  @Column()
-  lastName: string;
+  fio: string;
 
   @Column()
   login: string;
