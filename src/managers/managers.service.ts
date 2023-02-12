@@ -13,7 +13,7 @@ export class ManagersService {
     return this.managerRepository.findOne({ where: { login } });
   }
 
-  add(addManagerDto: AddManagerDto) {
+  add(addManagerDto: any) {
     const user = this.managerRepository.create({ ...addManagerDto });
 
     return this.managerRepository.save(user);
@@ -23,7 +23,7 @@ export class ManagersService {
     return this.managerRepository.delete(id);
   }
 
-  update(id, updateManagerDto: UpdateManagerDto) {
+  update(id, updateManagerDto: any) {
     return this.managerRepository.update(id, updateManagerDto);
   }
 

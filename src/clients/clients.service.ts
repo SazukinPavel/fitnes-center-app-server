@@ -1,15 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
+import Client from '../entities/client.entity';
+import AddClientDto from './dto/AddClient.dto';
 
 @Injectable()
 export class ClientsService {
   constructor(
-    @InjectRepository(User) private clientsRepository: Repository<User>,
+    @InjectRepository(Client) private clientsRepository: Repository<Client>,
   ) {}
 
   findByLogin(login: string) {
     return this.clientsRepository.findOne({ where: { login } });
+  }
+
+  add(addClientDto: AddClientDto) {
+    const client = this.clientsRepository.create(addClientDto);
+
+    return this.clientsRepository.save(client);
   }
 }

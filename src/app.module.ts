@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import entities from './entities';
+import { ManagersModule } from './managers/managers.module';
+import { ClientsModule } from './clients/clients.module';
+import { AdminsModule } from './admins/admins.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -21,8 +23,10 @@ import entities from './entities';
       }),
       inject: [ConfigService],
     }),
-    UsersModule,
     AuthModule,
+    ManagersModule,
+    ClientsModule,
+    AdminsModule,
   ],
 })
 export class AppModule {}
