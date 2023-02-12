@@ -22,7 +22,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
   async login(loginDto: LoginDto) {
-    const user = await this.getUserRole(loginDto);
+    const user = await this.getUser(loginDto.login);
 
     if (!user) {
       throw new HttpException('Wrong creditianals', 401);
@@ -53,7 +53,7 @@ export class AuthService {
     return this.authRepository.save(auth);
   }
 
-  async getUserRole({ login }: LoginDto): Promise<User> | undefined {
+  async getUser(login: string): Promise<User> | undefined {
     const auth = await this.getAuth(login);
     if (!auth) {
       const client = await this.clientsService.findByLogin(login);

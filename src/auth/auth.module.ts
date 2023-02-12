@@ -17,5 +17,6 @@ import { ManagersModule } from '../managers/managers.module';
     AdminsModule,
     ManagersModule,
   ],
+  exports: [AuthService],
 })
 export class AuthModule {}

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
@@ -6,6 +6,7 @@ import entities from './entities';
 import { ManagersModule } from './managers/managers.module';
 import { ClientsModule } from './clients/clients.module';
 import { AdminsModule } from './admins/admins.module';
+import { AuthMiddleware } from './middlewares/auth.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -29,4 +30,8 @@ import { AdminsModule } from './admins/admins.module';
     AdminsModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('*');
+  }
+}
