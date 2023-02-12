@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import LoginDto from './dto/Login.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import Auth from '../entities/auth.entity';
@@ -8,6 +8,9 @@ import { AdminsService } from '../admins/admins.service';
 import { ManagersService } from '../managers/managers.service';
 import Role from '../types/Role';
 import { User } from '../entities/user.entity';
+import { compare } from 'bcryptjs';
+import AuthorizeReponseDto from './dto/AuthorizeReponse.dto';
+import { JwtService } from '../services/jwt.service';
 
 @Injectable()
 export class AuthService {
@@ -16,10 +19,32 @@ export class AuthService {
     private clientsService: ClientsService,
     private adminsService: AdminsService,
     private managersService: ManagersService,
+    private jwtService: JwtService,
   ) {}
-  login(loginDto: LoginDto) {}
+  async login(loginDto: LoginDto) {
+    const user = await this.getUserRole(loginDto);
 
-  getAuth({ login }: LoginDto) {
+    if (!user) {
+      throw new HttpException('Wrong creditianals', 401);
+    }
+
+    const isPasswordCorrect = await new Promise<boolean>((resolve, reject) => {
+      compare(loginDto.password, user.password, function (err, result) {
+        if (err) {
+          reject(err);
+        }
+        resolve(result);
+      });
+    });
+
+    if (!isPasswordCorrect) {
+      throw new HttpException('Wrong password', 401);
+    }
+
+    return this.getAuthorize(user);
+  }
+
+  getAuth(login: string) {
     return this.authRepository.findOne({ where: { login } });
   }
 
@@ -28,20 +53,35 @@ export class AuthService {
     return this.authRepository.save(auth);
   }
 
-  async getUserType(loginDto: LoginDto): Promise<Role> | undefined {
-    const auth = await this.getAuth(loginDto);
+  async getUserRole({ login }: LoginDto): Promise<User> | undefined {
+    const auth = await this.getAuth(login);
     if (!auth) {
-      const client = await this.clientsService.findByLogin(loginDto.login);
-      const manager = await this.clientsService.findByLogin(loginDto.login);
-      const admin = await this.clientsService.findByLogin(loginDto.login);
+      const client = await this.clientsService.findByLogin(login);
+      const manager = await this.clientsService.findByLogin(login);
+      const admin = await this.clientsService.findByLogin(login);
       const user: User = client || manager || admin;
       if (!user) {
         return;
       }
 
-      return (await this.addAuth(user, user.role)).role;
+      this.addAuth(user, user.role);
+      return user;
     } else {
-      return auth.role;
+      switch (auth.role) {
+        case 'client': {
+          return this.clientsService.findByLogin(login);
+        }
+        case 'manager': {
+          return this.managersService.findByLogin(login);
+        }
+        case 'admin': {
+          return this.adminsService.findByLogin(login);
+        }
+      }
     }
+  }
+
+  getAuthorize(user: User): AuthorizeReponseDto {
+    return { token: this.jwtService.signToken(user), user };
   }
 }
