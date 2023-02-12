@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import Admin from '../entities/admin.entity';
+import AddAdminDto from './dto/AddAdmin.dto';
 
 @Injectable()
 export class AdminsService {
@@ -11,5 +12,15 @@ export class AdminsService {
 
   findByLogin(login: string) {
     return this.adminRepository.findOne({ where: { login } });
+  }
+
+  add(addAdminDto: AddAdminDto) {
+    const admin = this.adminRepository.create({ ...addAdminDto, fio: '' });
+
+    return this.adminRepository.save(admin);
+  }
+
+  delete(id: string) {
+    return this.adminRepository.delete(id);
   }
 }
