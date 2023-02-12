@@ -7,6 +7,7 @@ import { ManagersModule } from './managers/managers.module';
 import { ClientsModule } from './clients/clients.module';
 import { AdminsModule } from './admins/admins.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
+import { JwtService } from './services/jwt.service';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -29,6 +30,7 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
     ClientsModule,
     AdminsModule,
   ],
+  providers: [JwtService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
