@@ -7,4 +7,10 @@ export default class AddClientDto {
   password: string;
   @IsString()
   login: string;
+
+  weight: string;
+
+  height: number;
+
+  age: number;
 }

@@ -1,12 +1,61 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import AddClientDto from './dto/AddClient.dto';
 import { ClientsService } from './clients.service';
+import { GetUser, Roles } from '../decorators';
+import Manager from '../entities/manager.entity';
+import { RolesGuard } from '../guards/auth.guard';
+import { User } from '../entities/user.entity';
+import UpdateClientDto from './dto/UpdateClient.dto';
 
 @Controller('clients')
+@UseGuards(RolesGuard)
 export class ClientsController {
   constructor(private clientsService: ClientsService) {}
+
   @Post()
-  add(@Body() addClientDto: AddClientDto) {
-    return this.clientsService.add(addClientDto);
+  @Roles('manager')
+  add(@Body() addClientDto: AddClientDto, @GetUser() manager: Manager) {
+    return this.clientsService.add(addClientDto, manager);
+  }
+
+  @Get()
+  @Roles('manager', 'admin')
+  get(@GetUser() user: User) {
+    if (user.role === 'admin') {
+      return this.clientsService.getAll();
+    } else {
+      return this.clientsService.getAllByManager(user as Manager);
+    }
+  }
+
+  @Get(':id')
+  @Roles('user')
+  getById(@Param('id') id: string) {
+    return this.clientsService.getById(id);
+  }
+
+  @Put()
+  @Roles('manager', 'admin')
+  update(@Body() updateClientDto: UpdateClientDto) {
+    return this.clientsService.updateClient(updateClientDto);
+  }
+
+  @Delete(':id')
+  @Roles('admin', 'manager')
+  delete(@Param(':id') id: string, @GetUser() user: User) {
+    if (user.role === 'admin') {
+      return this.clientsService.deleteWithoutCheck(id);
+    } else {
+      return this.clientsService.delete(id, user.id);
+    }
   }
 }
