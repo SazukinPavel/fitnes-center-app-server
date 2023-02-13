@@ -18,7 +18,7 @@ export abstract class User {
   @Column()
   fio: string;
 
-  @Column()
+  @Column({ unique: true })
   login: string;
 
   @Column()
