@@ -11,7 +11,7 @@ export class AdminsService {
   ) {}
 
   findByLogin(login: string) {
-    return this.adminRepository.findOne({ where: { login } });
+    return this.adminRepository.findOneBy({ login });
   }
 
   add(addAdminDto: AddAdminDto) {

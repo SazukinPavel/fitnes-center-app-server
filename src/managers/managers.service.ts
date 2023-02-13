@@ -10,15 +10,17 @@ export class ManagersService {
   constructor(
     @InjectRepository(Manager) private managerRepository: Repository<Manager>,
   ) {}
+
   getById(id) {
-    return this.managerRepository.findOne({ where: { id } });
+    return this.managerRepository.findOneBy({ id });
   }
 
   getAll() {
     return this.managerRepository.find();
   }
+
   findByLogin(login: string) {
-    return this.managerRepository.findOne({ where: { login } });
+    return this.managerRepository.findOneBy({ login });
   }
 
   add(addManagerDto: AddManagerDto) {
@@ -26,6 +28,7 @@ export class ManagersService {
 
     return this.managerRepository.save(manager);
   }
+
   update(updateManagerDto: UpdateManagerDto) {
     return this.managerRepository.update(updateManagerDto.id, updateManagerDto);
   }

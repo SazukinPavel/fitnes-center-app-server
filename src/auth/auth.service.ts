@@ -21,6 +21,7 @@ export class AuthService {
     private managersService: ManagersService,
     private jwtService: JwtService,
   ) {}
+
   async login(loginDto: LoginDto) {
     const user = await this.getUser(loginDto.login);
     console.log(user, loginDto.login);
@@ -50,7 +51,7 @@ export class AuthService {
   }
 
   getAuthById(id: string) {
-    return this.authRepository.findOne({ where: { id } });
+    return this.authRepository.findOneBy({ id });
   }
 
   addAuth(user: User, role: Role) {
