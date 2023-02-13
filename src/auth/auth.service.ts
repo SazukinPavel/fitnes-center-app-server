@@ -23,6 +23,7 @@ export class AuthService {
   ) {}
   async login(loginDto: LoginDto) {
     const user = await this.getUser(loginDto.login);
+    console.log(user, loginDto.login);
 
     if (!user) {
       throw new HttpException('Wrong creditianals', 401);
@@ -48,6 +49,10 @@ export class AuthService {
     return this.authRepository.findOne({ where: { login } });
   }
 
+  getAuthById(id: string) {
+    return this.authRepository.findOne({ where: { id } });
+  }
+
   addAuth(user: User, role: Role) {
     const auth = this.authRepository.create({ ...user, role });
     return this.authRepository.save(auth);
@@ -57,8 +62,8 @@ export class AuthService {
     const auth = await this.getAuth(login);
     if (!auth) {
       const client = await this.clientsService.findByLogin(login);
-      const manager = await this.clientsService.findByLogin(login);
-      const admin = await this.clientsService.findByLogin(login);
+      const manager = await this.managersService.findByLogin(login);
+      const admin = await this.adminsService.findByLogin(login);
       const user: User = client || manager || admin;
       if (!user) {
         return;

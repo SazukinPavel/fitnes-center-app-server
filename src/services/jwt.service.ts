@@ -15,6 +15,6 @@ export class JwtService {
   }
 
   verifyToken(token: string) {
-    return verify(token, process.env.JWT_KEY) as User;
+    return verify(token, process.env.JWT_KEY);
   }
 }
