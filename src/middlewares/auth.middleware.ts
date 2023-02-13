@@ -3,7 +3,8 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
 import { JwtService } from '../services/jwt.service';
 import AppRequest from '../types/AppRequest';
-import { User } from '../entities/user.entity';
+import { JwtPayload } from 'jsonwebtoken';
+import Auth from '../entities/auth.entity';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -16,8 +17,14 @@ export class AuthMiddleware implements NestMiddleware {
     const token = req.headers['authorization']?.split(' ')[1];
     if (token) {
       try {
-        const parsedToken = this.jwtServise.verifyToken(token) as User;
-        const realUser = await this.authService.getAuthById(parsedToken.id);
+        const parsedToken: { data: Auth } = this.jwtServise.verifyToken(
+          token,
+        ) as { data: Auth };
+
+        const realUser = await this.authService.getAuthById(
+          parsedToken.data.id,
+        );
+
         req.user = realUser;
         req.role = realUser.role;
       } catch {}
