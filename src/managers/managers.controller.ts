@@ -30,7 +30,7 @@ export class ManagersController {
   @Get(':id')
   @Roles('user')
   get(@Param('id') id: string) {
-    return this.managerService.get(id);
+    return this.managerService.getById(id);
   }
 
   @Post()

@@ -10,7 +10,7 @@ export class ManagersService {
   constructor(
     @InjectRepository(Manager) private managerRepository: Repository<Manager>,
   ) {}
-  get(id) {
+  getById(id) {
     return this.managerRepository.findOne({ where: { id } });
   }
 
