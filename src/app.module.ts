@@ -8,6 +8,8 @@ import { ClientsModule } from './clients/clients.module';
 import { AdminsModule } from './admins/admins.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { JwtService } from './services/jwt.service';
+import { ExercisesModule } from './exercises/exercises.module';
+import { DietsModule } from './diets/diets.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { JwtService } from './services/jwt.service';
     ManagersModule,
     ClientsModule,
     AdminsModule,
+    ExercisesModule,
+    DietsModule,
   ],
   providers: [JwtService],
 })
