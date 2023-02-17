@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   UseGuards,
@@ -15,6 +16,7 @@ import Manager from '../entities/manager.entity';
 import { RolesGuard } from '../guards/auth.guard';
 import { User } from '../entities/user.entity';
 import UpdateClientDto from './dto/UpdateClient.dto';
+import SetDietDto from './dto/SetDiet.dto';
 
 @Controller('clients')
 @UseGuards(RolesGuard)
@@ -47,6 +49,12 @@ export class ClientsController {
   @Roles('manager', 'admin')
   update(@Body() updateClientDto: UpdateClientDto) {
     return this.clientsService.updateClient(updateClientDto);
+  }
+
+  @Patch()
+  @Roles('manager', 'admin')
+  setDiet(@Body() setDietdto: SetDietDto) {
+    return this.clientsService.setDiet(setDietdto);
   }
 
   @Delete(':id')

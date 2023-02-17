@@ -9,6 +9,7 @@ import Client from '../entities/client.entity';
 import AddClientDto from './dto/AddClient.dto';
 import Manager from '../entities/manager.entity';
 import UpdateClientDto from './dto/UpdateClient.dto';
+import SetDietDto from './dto/SetDiet.dto';
 
 @Injectable()
 export class ClientsService {
@@ -43,6 +44,10 @@ export class ClientsService {
 
   updateClient(updateClientDto: UpdateClientDto) {
     return this.clientsRepository.update(updateClientDto.id, updateClientDto);
+  }
+
+  setDiet({ clientId, dietId }: SetDietDto) {
+    return this.clientsRepository.update(clientId, { diet: { id: dietId } });
   }
 
   async delete(id: string, managerId: string) {
