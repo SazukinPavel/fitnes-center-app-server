@@ -9,4 +9,7 @@ export default class AddExerciseDto {
 
   @IsUUID()
   clientId: string;
+
+  @IsUUID()
+  exerciseId: string;
 }
