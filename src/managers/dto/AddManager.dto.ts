@@ -14,4 +14,7 @@ export default class AddManagerDto {
   @Min(18)
   @Max(65)
   age: number;
+
+  @IsString()
+  description:string
 }

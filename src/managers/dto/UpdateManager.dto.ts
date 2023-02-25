@@ -1,7 +1,6 @@
 import { IsNumber, IsString, Min, Max, IsUUID } from 'class-validator';
 
 export default class UpdateManagerDto {
-  @IsUUID()
   id: string;
 
   @IsString()

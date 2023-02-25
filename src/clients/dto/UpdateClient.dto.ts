@@ -1,7 +1,6 @@
 import { IsString, IsUUID } from 'class-validator';
 
 export default class UpdateClientDto {
-  @IsUUID()
   id: string;
   @IsString()
   fio: string;

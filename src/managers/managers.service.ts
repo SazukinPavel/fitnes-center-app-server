@@ -36,4 +36,8 @@ export class ManagersService {
   delete(id: string) {
     return this.managerRepository.delete(id);
   }
+
+  changeDescription(id:string,description:string){
+    return this.managerRepository.update(id,{description})
+  }
 }

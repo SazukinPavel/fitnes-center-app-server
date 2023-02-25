@@ -11,6 +11,9 @@ export default class Manager extends User {
   @Column({ nullable: true })
   age: number;
 
+  @Column({ nullable: true })
+  description:string
+
   @OneToMany(() => Client, (client) => client.owner)
   @JoinColumn()
   clients: Client[];

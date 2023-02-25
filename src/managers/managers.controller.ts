@@ -5,6 +5,7 @@ import {
   Get,
   HttpException,
   Param,
+  Patch,
   Post,
   Put,
   UseGuards,
@@ -15,6 +16,7 @@ import AddManagerDto from './dto/AddManager.dto';
 import UpdateManagerDto from './dto/UpdateManager.dto';
 import { Roles, GetUser } from '../decorators';
 import { User } from '../entities/user.entity';
+import PatchDescriptionDto from './dto/PatchDescription.dto';
 
 @Controller('managers')
 @UseGuards(RolesGuard)
@@ -46,6 +48,15 @@ export class ManagersController {
       return this.managerService.update(updateManagerDto);
     }
     throw new HttpException('You dont have this right!', 403);
+  }
+
+  @Patch()
+  @Roles('manager', 'admin')
+  changeDescription(@Body() patchDescriptionDto: PatchDescriptionDto) {
+    return this.managerService.changeDescription(
+      patchDescriptionDto.id,
+      patchDescriptionDto.description,
+    );
   }
 
   @Delete('id')
