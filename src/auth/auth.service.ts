@@ -50,8 +50,8 @@ export class AuthService {
     return this.authRepository.findOne({ where: { login } });
   }
 
-  getAuthById(id: string) {
-    return this.authRepository.findOneBy({ id });
+  getAuthByIdAndRole({ id, role }) {
+    return this.authRepository.findOneBy({ id, role });
   }
 
   addAuth(user: User, role: Role) {

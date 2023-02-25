@@ -21,9 +21,10 @@ export class AuthMiddleware implements NestMiddleware {
           token,
         ) as { data: Auth };
 
-        const realUser = await this.authService.getAuthById(
-          parsedToken.data.id,
-        );
+        const realUser = await this.authService.getAuthByIdAndRole({
+          id: parsedToken.data.id,
+          role: parsedToken.data.role,
+        });
 
         req.user = realUser;
         req.role = realUser.role;

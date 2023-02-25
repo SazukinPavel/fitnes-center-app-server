@@ -1,8 +1,12 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import LoginDto from './dto/Login.dto';
 import { AuthService } from './auth.service';
+import { GetUser, Roles } from 'src/decorators';
+import { User } from 'src/entities/user.entity';
+import { RolesGuard } from 'src/guards/auth.guard';
 
 @Controller('auth')
+@UseGuards(RolesGuard)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -12,8 +16,8 @@ export class AuthController {
   }
 
   @Post('me')
-  me() {}
-
-  @Post()
-  logout() {}
+  @Roles('user')
+  me(@GetUser() user: User) {
+    return this.authService.getAuthorize(user);
+  }
 }

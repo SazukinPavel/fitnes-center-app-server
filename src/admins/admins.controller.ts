@@ -13,7 +13,7 @@ import { AdminsService } from './admins.service';
 
 @Controller('admins')
 @UseGuards(RolesGuard)
-@Roles('admin')
+@Roles('user')
 export class AdminsController {
   constructor(private adminsService: AdminsService) {}
   @Post()
