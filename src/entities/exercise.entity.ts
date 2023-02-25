@@ -1,10 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import Client from './client.entity';
 import ExerciseInfo from './exercise-info.entity';
 import Manager from './manager.entity';
 
 @Entity()
-export abstract class Exercise {
+export class Exercise {
   @PrimaryGeneratedColumn()
   id: string;
 
@@ -21,5 +21,6 @@ export abstract class Exercise {
   manager: Manager;
 
   @ManyToOne(() => ExerciseInfo, (exerciseInfo) => exerciseInfo.exercises)
+  @JoinColumn()
   exerciseInfo: ExerciseInfo;
 }
