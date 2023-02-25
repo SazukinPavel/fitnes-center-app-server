@@ -10,7 +10,7 @@ import Role from '../types/Role';
 
 @Entity()
 export abstract class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   readonly role: Role;

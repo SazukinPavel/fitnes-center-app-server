@@ -3,7 +3,7 @@ import Client from './client.entity';
 
 @Entity()
 export default class Diet {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column({ unique: true })

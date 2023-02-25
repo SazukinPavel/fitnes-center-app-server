@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Exercise } from './exercise.entity';
 
 @Entity()
 export default class ExerciseInfo {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
@@ -10,4 +11,7 @@ export default class ExerciseInfo {
 
   @Column({ unique: true })
   name: string;
+
+  @OneToMany(() => Exercise, (exercise) => exercise.exerciseInfo)
+  exercises: Exercise[];
 }

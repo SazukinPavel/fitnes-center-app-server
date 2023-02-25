@@ -15,7 +15,7 @@ export class ExercisesService {
     const exercie = this.exerciseRepository.create({
       ...addExerciseDto,
       manager: { id: manager.id },
-      exercise: { id: addExerciseDto.exerciseId },
+      exerciseInfo: { id: addExerciseDto.exerciseId },
     });
 
     return this.exerciseRepository.save(exercie);

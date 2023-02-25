@@ -4,4 +4,6 @@ import Admin from './admin.entity';
 import Auth from './auth.entity';
 import Diet from './diet.entity';
 import ExerciseInfo from './exercise-info.entity';
-export default [Manager, Client, Admin, Auth, Diet, ExerciseInfo];
+import { Exercise } from './exercise.entity';
+
+export default [Manager, Client, Admin, Auth, Diet, ExerciseInfo, Exercise];

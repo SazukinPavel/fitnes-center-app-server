@@ -1,9 +1,8 @@
 import { User } from './user.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
-import Client from './client.entity';
+import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
 import Role from '../types/Role';
 import { Exercise } from './exercise.entity';
-import { JoinColumn } from 'typeorm/browser';
+import Client from './client.entity';
 
 @Entity()
 export default class Manager extends User {
@@ -11,7 +10,8 @@ export default class Manager extends User {
 
   @Column({ nullable: true })
   age: number;
-  @OneToMany(() => Client, (photo) => photo.owner)
+
+  @OneToMany(() => Client, (client) => client.owner)
   @JoinColumn()
   clients: Client[];
 

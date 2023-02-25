@@ -3,7 +3,7 @@ import Role from '../types/Role';
 
 @Entity()
 export default class Auth {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   authId: string;
   @Column()
   login: string;
