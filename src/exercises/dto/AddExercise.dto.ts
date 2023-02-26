@@ -4,7 +4,6 @@ export default class AddExerciseDto {
   @IsString()
   description: string;
 
-  @IsDate()
   date: Date;
 
   clientId: string;

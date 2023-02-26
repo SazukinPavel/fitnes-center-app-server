@@ -40,9 +40,9 @@ export class ExercisesController {
     return this.exercisesService.add(addExerciseDto, user);
   }
 
-  @Delete()
+  @Delete(':id')
   @Roles('manager', 'admin')
-  delete(id: string, @GetUser() { role, id: userId }: User) {
+  delete(@Param('id') id: string, @GetUser() { role, id: userId }: User) {
     if (role === 'manager') {
       return this.exercisesService.deleteByManager(id, userId);
     } else if (role === 'admin') {

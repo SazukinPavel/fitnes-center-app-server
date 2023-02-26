@@ -16,13 +16,16 @@ export class ExercisesService {
       ...addExerciseDto,
       manager: { id: manager.id },
       exerciseInfo: { id: addExerciseDto.exerciseId },
+      client: { id: addExerciseDto.clientId },
     });
 
     return this.exerciseRepository.save(exercie);
   }
 
   getAll() {
-    return this.exerciseRepository.find();
+    return this.exerciseRepository.find({
+      relations: ['client', 'manager', 'exerciseInfo'],
+    });
   }
 
   getById(id: string) {
@@ -32,6 +35,7 @@ export class ExercisesService {
   getByManager(managerId: string) {
     return this.exerciseRepository.find({
       where: { manager: { id: managerId } },
+      relations: ['client', 'manager', 'exerciseInfo'],
     });
   }
 
@@ -48,8 +52,10 @@ export class ExercisesService {
   }
 
   async deleteByManager(id: string, managerId: string) {
-    const exercise = await this.exerciseRepository.findOneBy({ id });
-    if (exercise.manager.id === managerId) {
+    const exercise = await this.exerciseRepository.findOne({ where:{id},relations:['manager'] });
+    console.log(exercise,managerId);
+    
+    if (exercise.manager.id == managerId) {
       return this.delete(id);
     }
 
