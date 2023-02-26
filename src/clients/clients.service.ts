@@ -31,11 +31,17 @@ export class ClientsService {
   }
 
   getById(id: string) {
-    return this.clientsRepository.findOneBy({ id });
+    return this.clientsRepository.findOne({
+      where: { id },
+      relations: ['owner'],
+    });
   }
 
   getAllByManager(owner: Manager) {
-    return this.clientsRepository.find({ where: { owner: { id: owner.id } } });
+    return this.clientsRepository.find({
+      where: { owner: { id: owner.id } },
+      relations: ['diet'],
+    });
   }
 
   getAll() {
@@ -43,6 +49,8 @@ export class ClientsService {
   }
 
   updateClient(updateClientDto: UpdateClientDto) {
+    console.log(updateClientDto);
+    
     return this.clientsRepository.update(updateClientDto.id, updateClientDto);
   }
 
@@ -57,7 +65,7 @@ export class ClientsService {
       throw new NotFoundException('User with this id not founded!');
     }
 
-    if (client.owner.id !== managerId) {
+    if (client.owner.id != managerId) {
       throw new ForbiddenException('You not owner of this client!');
     }
 

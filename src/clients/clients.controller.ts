@@ -54,12 +54,14 @@ export class ClientsController {
   @Patch()
   @Roles('manager', 'admin')
   setDiet(@Body() setDietdto: SetDietDto) {
+    console.log(setDietdto);
+    
     return this.clientsService.setDiet(setDietdto);
   }
 
   @Delete(':id')
   @Roles('admin', 'manager')
-  delete(@Param(':id') id: string, @GetUser() user: User) {
+  delete(@Param('id') id: string, @GetUser() user: User) {
     if (user.role === 'admin') {
       return this.clientsService.deleteWithoutCheck(id);
     } else {
