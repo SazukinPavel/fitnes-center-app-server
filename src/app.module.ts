@@ -1,3 +1,4 @@
+import { ExercisesInfoModule } from './exercises-info/exercises-info.module';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -32,6 +33,7 @@ import { DietsModule } from './diets/diets.module';
     ManagersModule,
     ClientsModule,
     AdminsModule,
+    ExercisesInfoModule,
     ExercisesModule,
     DietsModule,
   ],
