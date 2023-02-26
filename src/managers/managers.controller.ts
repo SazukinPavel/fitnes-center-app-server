@@ -59,7 +59,7 @@ export class ManagersController {
     );
   }
 
-  @Delete('id')
+  @Delete(':id')
   @Roles('admin')
   delete(@Param('id') id: string) {
     return this.managerService.delete(id);

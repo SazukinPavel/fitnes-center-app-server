@@ -7,9 +7,7 @@ export default class AddExerciseDto {
   @IsDate()
   date: Date;
 
-  @IsUUID()
   clientId: string;
 
-  @IsUUID()
   exerciseId: string;
 }
