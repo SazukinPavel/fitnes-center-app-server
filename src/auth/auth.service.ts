@@ -24,7 +24,6 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const user = await this.getUser(loginDto.login);
-    console.log(user, loginDto.login);
 
     if (!user) {
       throw new HttpException('Wrong creditianals', 401);
@@ -87,7 +86,11 @@ export class AuthService {
     }
   }
 
-  getAuthorize(user: User): AuthorizeReponseDto {
+  async getAuthorize(user: User): Promise<AuthorizeReponseDto> {
+    if(user.role==='client'){
+      user=(await this.clientsService.getById(user.id)) as User
+    }
+
     return { token: this.jwtService.signToken(user), user };
   }
 }

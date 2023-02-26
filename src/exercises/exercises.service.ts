@@ -44,6 +44,7 @@ export class ExercisesService {
       where: {
         client: { id: clientId },
       },
+      relations:['manager','exerciseInfo']
     });
   }
 

@@ -18,7 +18,7 @@ export class ClientsService {
   ) {}
 
   findByLogin(login: string) {
-    return this.clientsRepository.findOneBy({ login });
+    return this.clientsRepository.findOne({ where: { login } });
   }
 
   add(addClientDto: AddClientDto, manager: Manager) {
@@ -33,7 +33,7 @@ export class ClientsService {
   getById(id: string) {
     return this.clientsRepository.findOne({
       where: { id },
-      relations: ['owner'],
+      relations: ['owner', 'diet', 'exercises'],
     });
   }
 
@@ -50,7 +50,7 @@ export class ClientsService {
 
   updateClient(updateClientDto: UpdateClientDto) {
     console.log(updateClientDto);
-    
+
     return this.clientsRepository.update(updateClientDto.id, updateClientDto);
   }
 
