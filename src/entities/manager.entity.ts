@@ -15,7 +15,6 @@ export default class Manager extends User {
   description:string
 
   @OneToMany(() => Client, (client) => client.owner)
-  @JoinColumn()
   clients: Client[];
 
   @OneToMany(() => Exercise, (exercise) => exercise.manager)

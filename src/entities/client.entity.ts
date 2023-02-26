@@ -19,6 +19,7 @@ export default class Client extends User {
   age: number;
 
   @ManyToOne(() => Manager, (Manager) => Manager.clients)
+  @JoinColumn()
   owner: Manager;
 
   @ManyToOne(() => Diet, (diet) => diet.clients)
