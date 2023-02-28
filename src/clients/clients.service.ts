@@ -38,6 +38,7 @@ export class ClientsService {
   }
 
   getAllByManager(owner: Manager) {
+    console.log(owner.id);
     return this.clientsRepository.find({
       where: { owner: { id: owner.id } },
       relations: ['diet'],

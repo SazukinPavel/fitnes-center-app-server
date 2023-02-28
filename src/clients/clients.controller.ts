@@ -32,6 +32,7 @@ export class ClientsController {
   @Get()
   @Roles('manager', 'admin')
   get(@GetUser() user: User) {
+    console.log(user.role);
     if (user.role === 'admin') {
       return this.clientsService.getAll();
     } else {
@@ -55,7 +56,7 @@ export class ClientsController {
   @Roles('manager', 'admin')
   setDiet(@Body() setDietdto: SetDietDto) {
     console.log(setDietdto);
-    
+
     return this.clientsService.setDiet(setDietdto);
   }
 
