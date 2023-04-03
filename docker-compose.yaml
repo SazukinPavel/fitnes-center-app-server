@@ -1,0 +1,37 @@
+version: '3'
+services: 
+  db:
+    image: postgres
+    restart: always
+    environment: 
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    container_name: postgres-db
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+  nestjs:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    image: tusharchy/nest-and-postgres-application:latest
+    environment: 
+      - DB_HOST=${DB_HOST}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_SYNC=false
+      - JWT_KEY=${JWT_KEY}
+      - POSTGRES_PORT=${DB_HOST}
+      - APP_PORT=${APP_PORT}
+    ports: 
+      - "4200:3000" 
+    container_name: fitness-app-server
+    depends_on: 
+      - db
+    volumes: 
+      - .:/app
+      - /app/node_modules
+volumes:
+  pgdata:
+  pgadmin-data:
