@@ -14,7 +14,7 @@ services:
     build: 
       context: .
       dockerfile: ./Dockerfile
-    image: tusharchy/nest-and-postgres-application:latest
+    image: finess-app-server
     environment: 
       - DB_HOST=${DB_HOST}
       - DB_USERNAME=${DB_USERNAME}
