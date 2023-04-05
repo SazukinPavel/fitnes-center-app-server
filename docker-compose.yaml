@@ -7,9 +7,10 @@ services:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
+      - PGDATA= /pg-data
     container_name: postgres-db
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - pg-data:/pg-data
   nestjs:
     build: 
       context: .
@@ -33,5 +34,5 @@ services:
       - .:/app
       - /app/node_modules
 volumes:
-  pgdata:
+  pg-data:
   pgadmin-data:
