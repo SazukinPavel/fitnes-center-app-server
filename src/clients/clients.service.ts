@@ -50,8 +50,6 @@ export class ClientsService {
   }
 
   updateClient(updateClientDto: UpdateClientDto) {
-    console.log(updateClientDto);
-
     return this.clientsRepository.update(updateClientDto.id, updateClientDto);
   }
 

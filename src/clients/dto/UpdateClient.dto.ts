@@ -1,16 +1,15 @@
-import { IsString, IsUUID } from 'class-validator';
+import {IsNumber, IsString} from 'class-validator';
 
 export default class UpdateClientDto {
+  @IsNumber()
   id: string;
+
   @IsString()
   fio: string;
-  @IsString()
-  password: string;
-  @IsString()
-  login: string;
+
+  @IsNumber()
   weight: string;
 
+  @IsNumber()
   height: number;
-
-  age: number;
 }
