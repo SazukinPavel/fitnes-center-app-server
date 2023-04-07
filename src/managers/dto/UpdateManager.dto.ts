@@ -1,19 +1,12 @@
-import { IsNumber, IsString, Min, Max, IsUUID } from 'class-validator';
+import {IsNumber, IsString} from 'class-validator';
 
 export default class UpdateManagerDto {
+  @IsNumber()
   id: string;
 
   @IsString()
-  fio: string;
+  fio?: string;
 
   @IsString()
-  login: string;
-
-  @IsString()
-  password: string;
-
-  @IsNumber()
-  @Min(18)
-  @Max(65)
-  age: number;
+  description?: string;
 }
