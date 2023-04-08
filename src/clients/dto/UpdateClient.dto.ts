@@ -1,7 +1,7 @@
-import {IsNumber, IsString} from 'class-validator';
+import { IsNumber, IsString, IsUUID } from 'class-validator';
 
 export default class UpdateClientDto {
-  @IsNumber()
+  @IsUUID()
   id: string;
 
   @IsString()
@@ -12,4 +12,7 @@ export default class UpdateClientDto {
 
   @IsNumber()
   height: number;
+
+  @IsString()
+  authId: string;
 }

@@ -62,8 +62,16 @@ export class ClientsService {
     return this.clientsRepository.find();
   }
 
-  updateClient(updateClientDto: UpdateClientDto) {
-    return this.clientsRepository.update(updateClientDto.id, updateClientDto);
+  async updateClient({ authId, id, fio, height, weight }: UpdateClientDto) {
+    await this.authService.update({
+      fio,
+      id: authId,
+    });
+
+    return this.clientsRepository.update(id, {
+      height,
+      weight,
+    });
   }
 
   setDiet({ clientId, dietId }: SetDietDto) {
