@@ -8,6 +8,7 @@ import AuthorizeReponseDto from './dto/AuthorizeReponse.dto';
 import { JwtService } from '../services/jwt.service';
 import CreateAuthDto from './dto/CreateAuth.dto';
 import { User } from '../types/User';
+import UpdateAuthDto from './dto/UpdateAuth.dto';
 
 @Injectable()
 export class AuthService {
@@ -70,5 +71,9 @@ export class AuthService {
 
   async getAuthorize(user: User): Promise<AuthorizeReponseDto> {
     return { token: this.jwtService.signToken(user.auth), user };
+  }
+
+  update(dto: UpdateAuthDto) {
+    return this.authRepository.update(dto.id, dto);
   }
 }
