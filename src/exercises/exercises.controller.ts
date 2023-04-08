@@ -7,11 +7,12 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { GetUser, Roles } from '../decorators';
 import { RolesGuard } from '../guards/auth.guard';
-import { User } from '../entities/user.entity';
 import { ExercisesService } from './exercises.service';
 import AddExerciseDto from './dto/AddExercise.dto';
+import { GetUser, Roles } from '../decorators';
+import Auth from '../entities/auth.entity';
+import { User } from '../types/User';
 
 @Controller('exercises')
 @UseGuards(RolesGuard)

@@ -1,4 +1,4 @@
-import { User } from '../../entities/user.entity';
+import { User } from '../../types/User';
 
 export default class AuthorizeReponseDto {
   token: string;

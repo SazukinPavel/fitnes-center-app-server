@@ -14,9 +14,10 @@ import { RolesGuard } from '../guards/auth.guard';
 import { ManagersService } from './managers.service';
 import AddManagerDto from './dto/AddManager.dto';
 import UpdateManagerDto from './dto/UpdateManager.dto';
-import { Roles, GetUser } from '../decorators';
-import { User } from '../entities/user.entity';
 import PatchDescriptionDto from './dto/PatchDescription.dto';
+import { GetUser, Roles } from '../decorators';
+import Auth from '../entities/auth.entity';
+import { User } from '../types/User';
 
 @Controller('managers')
 @UseGuards(RolesGuard)

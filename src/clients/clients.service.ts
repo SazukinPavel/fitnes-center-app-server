@@ -4,27 +4,34 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import Client from '../entities/client.entity';
 import AddClientDto from './dto/AddClient.dto';
-import Manager from '../entities/manager.entity';
 import UpdateClientDto from './dto/UpdateClient.dto';
 import SetDietDto from './dto/SetDiet.dto';
+import { AuthService } from '../auth/auth.service';
+import { Repository } from 'typeorm';
+import Auth from '../entities/auth.entity';
+import Manager from '../entities/manager.entity';
 
 @Injectable()
 export class ClientsService {
   constructor(
     @InjectRepository(Client) private clientsRepository: Repository<Client>,
+    private authService: AuthService,
   ) {}
 
-  findByLogin(login: string) {
-    return this.clientsRepository.findOne({ where: { login } });
-  }
+  async add(addClientDto: AddClientDto, manager: Manager) {
+    await this.authService.checkIsLoginBlocked(addClientDto.login);
 
-  add(addClientDto: AddClientDto, manager: Manager) {
+    const auth = await this.authService.addAuth({
+      ...addClientDto,
+      role: 'client',
+    });
+
     const client = this.clientsRepository.create({
       ...addClientDto,
       owner: manager,
+      auth,
     });
 
     return this.clientsRepository.save(client);
@@ -33,15 +40,21 @@ export class ClientsService {
   getById(id: string) {
     return this.clientsRepository.findOne({
       where: { id },
-      relations: ['owner', 'diet', 'exercises'],
+      relations: ['owner', 'diet', 'exercises', 'auth'],
     });
   }
 
-  getAllByManager(owner: Manager) {
-    console.log(owner.id);
+  getByAuthId(authId: string) {
+    return this.clientsRepository.findOne({
+      where: { auth: { id: authId } },
+      relations: ['auth'],
+    });
+  }
+
+  getAllByManager(auth: Manager) {
     return this.clientsRepository.find({
-      where: { owner: { id: owner.id } },
-      relations: ['diet'],
+      where: { owner: { id: auth.id } },
+      relations: ['diet', 'auth'],
     });
   }
 
@@ -67,11 +80,13 @@ export class ClientsService {
     if (client.owner.id != managerId) {
       throw new ForbiddenException('You not owner of this client!');
     }
-
     return this.deleteWithoutCheck(id);
   }
 
-  deleteWithoutCheck(id: string) {
-    return this.clientsRepository.delete(id);
+  async deleteWithoutCheck(id: string) {
+    const authId = (await this.getById(id)).auth.id;
+    const result = await this.clientsRepository.delete(id);
+    await this.authService.deleteAuthById(authId);
+    return result;
   }
 }

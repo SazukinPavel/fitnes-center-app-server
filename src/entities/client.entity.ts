@@ -1,12 +1,23 @@
-import { User } from './user.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import Manager from './manager.entity';
-import Role from '../types/Role';
 import Diet from './diet.entity';
 import { Exercise } from './exercise.entity';
+import Role from '../types/Role';
+import Auth from './auth.entity';
 
 @Entity()
-export default class Client extends User {
+export default class Client {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
   readonly role: Role = 'client';
 
   @Column({ nullable: true })
@@ -17,6 +28,10 @@ export default class Client extends User {
 
   @Column({ nullable: true })
   age: number;
+
+  @OneToOne(() => Auth, { cascade: true })
+  @JoinColumn()
+  auth: Auth;
 
   @ManyToOne(() => Manager, (Manager) => Manager.clients)
   @JoinColumn()

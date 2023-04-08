@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { sign, verify } from 'jsonwebtoken';
-import { User } from '../entities/user.entity';
+import Auth from '../entities/auth.entity';
 
 @Injectable()
 export class JwtService {
-  signToken(user: User) {
+  signToken(auth: Auth) {
     return sign(
       {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
-        data: { role: user.role, id: user.id },
+        data: { role: auth.role, id: auth.id },
       },
       process.env.JWT_KEY,
     );

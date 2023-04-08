@@ -2,7 +2,8 @@ import {
   Body,
   Controller,
   Delete,
-  Get, HttpException,
+  ForbiddenException,
+  Get,
   Param,
   Patch,
   Post,
@@ -11,13 +12,12 @@ import {
 } from '@nestjs/common';
 import AddClientDto from './dto/AddClient.dto';
 import { ClientsService } from './clients.service';
-import { GetUser, Roles } from '../decorators';
-import Manager from '../entities/manager.entity';
 import { RolesGuard } from '../guards/auth.guard';
-import { User } from '../entities/user.entity';
 import UpdateClientDto from './dto/UpdateClient.dto';
 import SetDietDto from './dto/SetDiet.dto';
-import role from "../types/Role";
+import { GetUser, Roles } from '../decorators';
+import Manager from '../entities/manager.entity';
+import { User } from '../types/User';
 
 @Controller('clients')
 @UseGuards(RolesGuard)
@@ -47,10 +47,10 @@ export class ClientsController {
   }
 
   @Put()
-  @Roles('manager', 'admin','client')
-  update(@Body() updateClientDto: UpdateClientDto,@GetUser() user:User) {
-    if(user.role==='client' && user.id!=updateClientDto.id){
-      throw new HttpException('You dont have this right!', 403);
+  @Roles('manager', 'admin', 'client')
+  update(@Body() updateClientDto: UpdateClientDto, @GetUser() user: User) {
+    if (user.role === 'client' && user.id != updateClientDto.id) {
+      throw new ForbiddenException('You dont have this right!');
     }
     return this.clientsService.updateClient(updateClientDto);
   }
