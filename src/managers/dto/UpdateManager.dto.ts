@@ -1,7 +1,7 @@
-import {IsNumber, IsString} from 'class-validator';
+import { IsNumber, IsString, IsUUID } from 'class-validator';
 
 export default class UpdateManagerDto {
-  @IsNumber()
+  @IsUUID()
   id: string;
 
   @IsString()
@@ -9,4 +9,7 @@ export default class UpdateManagerDto {
 
   @IsString()
   description?: string;
+
+  @IsString()
+  authId: string;
 }

@@ -18,7 +18,7 @@ export class ManagersService {
   }
 
   getAll() {
-    return this.managerRepository.find();
+    return this.managerRepository.find({ relations: ['auth'] });
   }
 
   getByAuthId(authId: string) {
@@ -41,8 +41,15 @@ export class ManagersService {
     return await this.managerRepository.save(manager);
   }
 
-  update(updateManagerDto: UpdateManagerDto) {
-    return this.managerRepository.update(updateManagerDto.id, updateManagerDto);
+  async update(updateManagerDto: UpdateManagerDto) {
+    await this.authService.update({
+      id: updateManagerDto.authId,
+      fio: updateManagerDto.fio,
+    });
+
+    return this.managerRepository.update(updateManagerDto.id, {
+      description: updateManagerDto.description,
+    });
   }
 
   async delete(id: string) {
