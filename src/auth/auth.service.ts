@@ -9,6 +9,7 @@ import { JwtService } from '../services/jwt.service';
 import CreateAuthDto from './dto/CreateAuth.dto';
 import { User } from '../types/User';
 import UpdateAuthDto from './dto/UpdateAuth.dto';
+import ChangePasswordDto from './dto/ChangePassword.dto';
 
 @Injectable()
 export class AuthService {
@@ -75,5 +76,21 @@ export class AuthService {
 
   update(dto: UpdateAuthDto) {
     return this.authRepository.update(dto.id, dto);
+  }
+
+  async changePassword(user: User, dto: ChangePasswordDto) {
+    const isPasswordEqual = await compare(dto.oldPassword, user.auth.password);
+    if (!isPasswordEqual) {
+      throw new BadRequestException(
+        'Старый пароль не совпадает с действительным.',
+      );
+    }
+
+    try {
+      user.auth.password = dto.newPassword;
+      await this.authRepository.update(user.auth.id, user.auth);
+    } catch {
+      throw new BadRequestException('Произошла ошибка при смене пароля');
+    }
   }
 }
