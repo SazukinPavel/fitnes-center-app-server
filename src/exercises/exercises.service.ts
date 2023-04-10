@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Exercise } from '../entities/exercise.entity';
 import { User } from '../types/User';
+import UpdateIsPayed from './dto/UpdateIsPayed';
 
 @Injectable()
 export class ExercisesService {
@@ -63,5 +64,9 @@ export class ExercisesService {
     }
 
     throw new ForbiddenException('You not owner of this exersice!');
+  }
+
+  updateExercisePayed({ isPayed, id }: UpdateIsPayed) {
+    return this.exerciseRepository.update(id, { isPayed });
   }
 }

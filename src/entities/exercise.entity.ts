@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import Client from './client.entity';
 import ExerciseInfo from './exercise-info.entity';
 import Manager from './manager.entity';
@@ -10,6 +16,9 @@ export class Exercise {
 
   @Column()
   description: string;
+
+  @Column({ default: false })
+  isPayed: boolean;
 
   @Column()
   date: Date;

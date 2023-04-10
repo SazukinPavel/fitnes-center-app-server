@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -13,6 +14,7 @@ import AddExerciseDto from './dto/AddExercise.dto';
 import { GetUser, Roles } from '../decorators';
 import Auth from '../entities/auth.entity';
 import { User } from '../types/User';
+import UpdateIsPayed from './dto/UpdateIsPayed';
 
 @Controller('exercises')
 @UseGuards(RolesGuard)
@@ -49,5 +51,11 @@ export class ExercisesController {
     } else if (role === 'admin') {
       return this.exercisesService.delete(id);
     }
+  }
+
+  @Patch('is-payed')
+  @Roles('manager', 'admin')
+  updateExerciseIsPayed(@Body() dto: UpdateIsPayed) {
+    return this.exercisesService.updateExercisePayed(dto);
   }
 }
