@@ -9,5 +9,5 @@ export default class CreateAuthDto {
 
   password: string;
 
-  birthDate: Date;
+  birthDate?: Date;
 }
