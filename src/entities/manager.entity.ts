@@ -23,9 +23,6 @@ export default class Manager {
   auth: Auth;
 
   @Column({ nullable: true })
-  age: number;
-
-  @Column({ nullable: true })
   description: string;
 
   @OneToMany(() => Client, (client) => client.owner)

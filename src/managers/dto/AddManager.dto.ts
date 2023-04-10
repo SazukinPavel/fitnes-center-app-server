@@ -1,5 +1,3 @@
-import { IsNumber, IsString, Min, Max } from 'class-validator';
-
 export default class AddManagerDto {
   fio: string;
 
@@ -9,5 +7,7 @@ export default class AddManagerDto {
 
   age: number;
 
-  description:string
+  description: string;
+
+  birthDate: Date;
 }

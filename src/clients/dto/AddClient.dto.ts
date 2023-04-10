@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsDate, IsString } from 'class-validator';
 
 export default class AddClientDto {
   @IsString()
@@ -7,6 +7,9 @@ export default class AddClientDto {
   password: string;
   @IsString()
   login: string;
+
+  @IsDate()
+  birthDate: Date;
 
   weight: string;
 

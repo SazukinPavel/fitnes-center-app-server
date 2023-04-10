@@ -8,4 +8,6 @@ export default class CreateAuthDto {
   login: string;
 
   password: string;
+
+  birthDate: Date;
 }

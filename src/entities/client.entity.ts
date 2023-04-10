@@ -26,9 +26,6 @@ export default class Client {
   @Column({ nullable: true })
   height: number;
 
-  @Column({ nullable: true })
-  age: number;
-
   @OneToOne(() => Auth, { cascade: true })
   @JoinColumn()
   auth: Auth;

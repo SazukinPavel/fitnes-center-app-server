@@ -10,7 +10,6 @@ import UpdateClientDto from './dto/UpdateClient.dto';
 import SetDietDto from './dto/SetDiet.dto';
 import { AuthService } from '../auth/auth.service';
 import { Repository } from 'typeorm';
-import Auth from '../entities/auth.entity';
 import Manager from '../entities/manager.entity';
 
 @Injectable()
