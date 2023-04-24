@@ -22,7 +22,7 @@ export class DietsService {
   }
 
   delete(id: string) {
-    return this.dietsRepository.delete(id);
+    return this.dietsRepository.update(id, { isActive: false });
   }
 
   getById(id: string) {
@@ -30,6 +30,6 @@ export class DietsService {
   }
 
   getAll() {
-    return this.dietsRepository.find();
+    return this.dietsRepository.find({ where: { isActive: true } });
   }
 }

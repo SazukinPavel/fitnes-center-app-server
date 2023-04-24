@@ -6,11 +6,14 @@ export default class Diet {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column({ unique: true })
+  @Column()
   name: string;
 
   @Column()
   description: string;
+
+  @Column({ default: true })
+  isActive: boolean;
 
   @OneToMany(() => Client, (client) => client.diet)
   clients: Client[];
