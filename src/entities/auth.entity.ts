@@ -2,6 +2,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Column,
+  CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -30,6 +31,9 @@ export default class Auth {
 
   @Column({ nullable: true })
   telephone: string;
+
+  @CreateDateColumn()
+  createdAt: string;
 
   @BeforeInsert()
   @BeforeUpdate()

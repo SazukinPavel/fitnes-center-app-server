@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
 } from 'typeorm';
 import Client from './client.entity';
 import ExerciseInfo from './exercise-info.entity';
@@ -22,6 +23,9 @@ export class Exercise {
 
   @Column()
   date: Date;
+
+  @CreateDateColumn()
+  createdAt: string;
 
   @ManyToOne(() => Client, (client) => client.exercises)
   client: Client;

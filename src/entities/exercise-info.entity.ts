@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+} from 'typeorm';
 import { Exercise } from './exercise.entity';
 
 @Entity()
@@ -14,6 +20,9 @@ export default class ExerciseInfo {
 
   @Column()
   duration: string;
+
+  @CreateDateColumn()
+  createdAt: string;
 
   @Column({ default: true })
   isActive: boolean;
