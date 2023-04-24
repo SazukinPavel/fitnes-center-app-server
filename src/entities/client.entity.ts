@@ -37,7 +37,9 @@ export default class Client {
   @ManyToOne(() => Diet, (diet) => diet.clients)
   diet: Diet;
 
-  @OneToMany(() => Exercise, (exercise) => exercise.client)
+  @OneToMany(() => Exercise, (exercise) => exercise.client, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   exercises: Exercise[];
 }

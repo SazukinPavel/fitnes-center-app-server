@@ -18,17 +18,19 @@ export default class Manager {
 
   readonly role: Role = 'manager';
 
-  @OneToOne(() => Auth, { cascade: true })
+  @OneToOne(() => Auth, { cascade: true, onDelete: 'CASCADE' })
   @JoinColumn()
   auth: Auth;
 
   @Column({ nullable: true })
   description: string;
 
-  @OneToMany(() => Client, (client) => client.owner)
+  @OneToMany(() => Client, (client) => client.owner, { onDelete: 'CASCADE' })
   clients: Client[];
 
-  @OneToMany(() => Exercise, (exercise) => exercise.manager)
+  @OneToMany(() => Exercise, (exercise) => exercise.manager, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   exercises: Exercise[];
 }
