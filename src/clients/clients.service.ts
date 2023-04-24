@@ -54,11 +54,14 @@ export class ClientsService {
     return this.clientsRepository.find({
       where: { owner: { id: auth.id } },
       relations: ['diet', 'auth'],
+      order: { auth: { createdAt: 'asc' } },
     });
   }
 
   getAll() {
-    return this.clientsRepository.find();
+    return this.clientsRepository.find({
+      order: { auth: { createdAt: 'asc' } },
+    });
   }
 
   async updateClient({ authId, id, fio, height, weight }: UpdateClientDto) {

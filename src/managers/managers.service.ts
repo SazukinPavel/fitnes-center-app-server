@@ -18,7 +18,10 @@ export class ManagersService {
   }
 
   getAll() {
-    return this.managerRepository.find({ relations: ['auth'] });
+    return this.managerRepository.find({
+      relations: ['auth'],
+      order: { auth: { createdAt: 'asc' } },
+    });
   }
 
   getByAuthId(authId: string) {

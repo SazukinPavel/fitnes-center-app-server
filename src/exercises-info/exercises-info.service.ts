@@ -34,7 +34,10 @@ export class ExercisesInfoService {
   }
 
   getAll() {
-    return this.exerciseInfoRepository.find({ where: { isActive: true } });
+    return this.exerciseInfoRepository.find({
+      where: { isActive: true },
+      order: { createdAt: 'asc' },
+    });
   }
 
   update(updateExerciseDto: UpdateExerciseDto) {

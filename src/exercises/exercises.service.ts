@@ -37,6 +37,7 @@ export class ExercisesService {
     return this.exerciseRepository.find({
       where: { manager: { id: authId } },
       relations: ['client', 'manager', 'exerciseInfo'],
+      order: { createdAt: 'asc' },
     });
   }
 
@@ -45,7 +46,8 @@ export class ExercisesService {
       where: {
         client: { id: authId },
       },
-      relations: ['manager', 'exerciseInfo'],
+      relations: ['manager', 'exerciseInfo', 'manager.auth'],
+      order: { createdAt: 'asc' },
     });
   }
 
