@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import Diet from '../entities/diet.entity';
@@ -11,7 +11,16 @@ export class DietsService {
     @InjectRepository(Diet) private dietsRepository: Repository<Diet>,
   ) {}
 
-  add(addDietDto: AddDietDto) {
+  async add(addDietDto: AddDietDto) {
+    const existedDiet = await this.dietsRepository.findOneBy({
+      isActive: true,
+      name: addDietDto.name,
+    });
+
+    if (existedDiet) {
+      throw new BadRequestException('Диета с таким именем уже существует');
+    }
+
     const diet = this.dietsRepository.create({ ...addDietDto });
 
     return this.dietsRepository.save(diet);
