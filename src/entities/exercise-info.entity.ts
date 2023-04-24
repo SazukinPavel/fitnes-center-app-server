@@ -9,8 +9,11 @@ export default class ExerciseInfo {
   @Column()
   description: string;
 
-  @Column({ unique: true })
+  @Column()
   name: string;
+
+  @Column({ default: true })
+  isActive: boolean;
 
   @OneToMany(() => Exercise, (exercise) => exercise.exerciseInfo)
   exercises: Exercise[];

@@ -23,7 +23,7 @@ export class ExercisesInfoService {
   }
 
   getAll() {
-    return this.exerciseInfoRepository.find();
+    return this.exerciseInfoRepository.find({ where: { isActive: false } });
   }
 
   update(updateExerciseDto: UpdateExerciseDto) {
@@ -34,6 +34,6 @@ export class ExercisesInfoService {
   }
 
   delete(id: string) {
-    return this.exerciseInfoRepository.delete(id);
+    return this.exerciseInfoRepository.update(id, { isActive: true });
   }
 }
