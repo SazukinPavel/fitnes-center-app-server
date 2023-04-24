@@ -12,4 +12,6 @@ export default class UpdateManagerDto {
 
   @IsString()
   authId: string;
+
+  telephone: string;
 }

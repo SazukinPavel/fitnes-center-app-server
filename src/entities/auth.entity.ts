@@ -28,6 +28,9 @@ export default class Auth {
   @Column({ nullable: true })
   birthDate: Date;
 
+  @Column({ nullable: true })
+  telephone: string;
+
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {

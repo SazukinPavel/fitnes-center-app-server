@@ -10,4 +10,6 @@ export default class AddManagerDto {
   description: string;
 
   birthDate: Date;
+
+  telephone: string;
 }

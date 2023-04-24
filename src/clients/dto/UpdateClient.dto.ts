@@ -15,4 +15,6 @@ export default class UpdateClientDto {
 
   @IsString()
   authId: string;
+
+  telephone: string;
 }
