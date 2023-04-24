@@ -12,6 +12,9 @@ export default class ExerciseInfo {
   @Column()
   name: string;
 
+  @Column()
+  duration: string;
+
   @Column({ default: true })
   isActive: boolean;
 

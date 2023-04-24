@@ -6,4 +6,7 @@ export default class AddExerciseInfoDto {
 
   @IsString()
   description: string;
+
+  @IsString()
+  duration: string;
 }

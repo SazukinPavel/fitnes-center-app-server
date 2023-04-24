@@ -8,4 +8,7 @@ export default class UpdateExerciseDto {
 
   @IsString()
   description: string;
+
+  @IsString()
+  duration: string;
 }
