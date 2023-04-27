@@ -21,6 +21,9 @@ export class Exercise {
   @Column({ default: false })
   isPayed: boolean;
 
+  @Column({ nullable: true })
+  duration: string;
+
   @Column()
   date: Date;
 

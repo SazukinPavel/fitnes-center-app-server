@@ -18,7 +18,7 @@ export default class ExerciseInfo {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   duration: string;
 
   @CreateDateColumn()

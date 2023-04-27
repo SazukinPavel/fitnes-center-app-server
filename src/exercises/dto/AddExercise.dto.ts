@@ -9,4 +9,6 @@ export default class AddExerciseDto {
   clientId: string;
 
   exerciseId: string;
+
+  duration: string;
 }
