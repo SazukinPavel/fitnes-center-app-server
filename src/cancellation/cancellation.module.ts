@@ -6,5 +6,6 @@ import Cancellation from '../entities/cancellation.entity.';
 @Module({
   providers: [CancellationService],
   imports: [TypeOrmModule.forFeature([Cancellation])],
+  exports: [CancellationService],
 })
 export class CancellationModule {}
