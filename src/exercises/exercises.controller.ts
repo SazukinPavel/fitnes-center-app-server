@@ -14,6 +14,7 @@ import AddExerciseDto from './dto/AddExercise.dto';
 import { GetUser, Roles } from '../decorators';
 import { User } from '../types/User';
 import UpdateIsPayed from './dto/UpdateIsPayed';
+import AddCancellationDto from './dto/AddCancellation.dto';
 
 @Controller('exercises')
 @UseGuards(RolesGuard)
@@ -56,5 +57,11 @@ export class ExercisesController {
   @Roles('manager', 'admin')
   updateExerciseIsPayed(@Body() dto: UpdateIsPayed) {
     return this.exercisesService.updateExercisePayed(dto);
+  }
+
+  @Patch('cancel')
+  @Roles('user')
+  addCancellation(@Body() dto: AddCancellationDto) {
+    return this.exercisesService.addCancellation(dto);
   }
 }

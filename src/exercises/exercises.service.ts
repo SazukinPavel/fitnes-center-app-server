@@ -1,16 +1,23 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import AddExerciseDto from './dto/AddExercise.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../types/User';
 import UpdateIsPayed from './dto/UpdateIsPayed';
 import Exercise from '../entities/exercise.entity';
+import AddCancellationDto from './dto/AddCancellation.dto';
+import { CancellationService } from '../cancellation/cancellation.service';
 
 @Injectable()
 export class ExercisesService {
   constructor(
     @InjectRepository(Exercise)
     private exerciseRepository: Repository<Exercise>,
+    private cancellationService: CancellationService,
   ) {}
   add(addExerciseDto: AddExerciseDto, manager: User) {
     const exercie = this.exerciseRepository.create({
@@ -31,7 +38,10 @@ export class ExercisesService {
   }
 
   getById(id: string) {
-    return this.exerciseRepository.findOneBy({ id });
+    return this.exerciseRepository.findOne({
+      where: { id },
+      relations: ['client', 'manager', 'exerciseInfo', 'cancellation'],
+    });
   }
 
   getByManager(authId: string) {
@@ -71,5 +81,19 @@ export class ExercisesService {
 
   updateExercisePayed({ isPayed, id }: UpdateIsPayed) {
     return this.exerciseRepository.update(id, { isPayed });
+  }
+
+  async addCancellation({ exerciseId, ...dto }: AddCancellationDto) {
+    const exercise = await this.getById(exerciseId);
+
+    if (!exercise) {
+      throw new BadRequestException('Такого занятия не существует');
+    }
+
+    const cancellation = await this.cancellationService.add(dto);
+
+    await this.exerciseRepository.update(exerciseId, { cancellation });
+
+    return this.getById(exerciseId);
   }
 }
