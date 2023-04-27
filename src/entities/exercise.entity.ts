@@ -5,10 +5,12 @@ import {
   ManyToOne,
   JoinColumn,
   CreateDateColumn,
+  OneToOne,
 } from 'typeorm';
 import Client from './client.entity';
 import ExerciseInfo from './exercise-info.entity';
 import Manager from './manager.entity';
+import Cancellation from './cancellation.entity.';
 
 @Entity()
 export class Exercise {
@@ -29,6 +31,10 @@ export class Exercise {
 
   @CreateDateColumn()
   createdAt: string;
+
+  @OneToOne(() => Cancellation, { onDelete: 'CASCADE' })
+  @JoinColumn()
+  cancellation: Cancellation;
 
   @ManyToOne(() => Client, (client) => client.exercises)
   client: Client;
