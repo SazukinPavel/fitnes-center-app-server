@@ -2,9 +2,9 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import AddExerciseDto from './dto/AddExercise.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Exercise } from '../entities/exercise.entity';
 import { User } from '../types/User';
 import UpdateIsPayed from './dto/UpdateIsPayed';
+import Exercise from '../entities/exercise.entity';
 
 @Injectable()
 export class ExercisesService {

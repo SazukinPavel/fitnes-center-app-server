@@ -7,9 +7,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import Role from '../types/Role';
-import { Exercise } from './exercise.entity';
 import Client from './client.entity';
 import Auth from './auth.entity';
+import Exercise from './exercise.entity';
 
 @Entity()
 export default class Manager {

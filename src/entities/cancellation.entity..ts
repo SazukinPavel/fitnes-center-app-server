@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import Exercise from './exercise.entity';
 
 @Entity()
 export default class Cancellation {
@@ -10,4 +11,7 @@ export default class Cancellation {
 
   @Column()
   by: string;
+
+  @OneToOne(() => Exercise, (user) => user.cancellation) // specify inverse side as a second parameter
+  exercise: Exercise;
 }

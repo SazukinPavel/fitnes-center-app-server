@@ -5,7 +5,7 @@ import {
   OneToMany,
   CreateDateColumn,
 } from 'typeorm';
-import { Exercise } from './exercise.entity';
+import Exercise from './exercise.entity';
 
 @Entity()
 export default class ExerciseInfo {

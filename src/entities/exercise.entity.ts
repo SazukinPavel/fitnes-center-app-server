@@ -13,7 +13,7 @@ import Manager from './manager.entity';
 import Cancellation from './cancellation.entity.';
 
 @Entity()
-export class Exercise {
+export default class Exercise {
   @PrimaryGeneratedColumn()
   id: string;
 
