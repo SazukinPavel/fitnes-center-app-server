@@ -10,5 +10,6 @@ export default class CreateAuthDto {
   password: string;
 
   birthDate?: Date;
+
   telephone: string;
 }

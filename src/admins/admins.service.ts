@@ -18,6 +18,7 @@ export class AdminsService {
       ...addAdminDto,
       role: 'admin',
       fio: '',
+      telephone: '',
     });
 
     const admin = this.adminRepository.create({
