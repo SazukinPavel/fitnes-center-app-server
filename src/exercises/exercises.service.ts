@@ -26,6 +26,7 @@ export class ExercisesService {
   getAll() {
     return this.exerciseRepository.find({
       relations: ['client', 'manager', 'exerciseInfo'],
+      order: { createdAt: 'DESC' },
     });
   }
 
@@ -37,7 +38,7 @@ export class ExercisesService {
     return this.exerciseRepository.find({
       where: { manager: { id: authId } },
       relations: ['client', 'manager', 'exerciseInfo'],
-      order: { createdAt: 'asc' },
+      order: { createdAt: 'DESC' },
     });
   }
 
@@ -47,7 +48,7 @@ export class ExercisesService {
         client: { id: authId },
       },
       relations: ['manager', 'exerciseInfo', 'manager.auth'],
-      order: { createdAt: 'asc' },
+      order: { createdAt: 'DESC' },
     });
   }
 

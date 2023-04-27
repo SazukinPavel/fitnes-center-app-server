@@ -41,7 +41,7 @@ export class DietsService {
   getAll() {
     return this.dietsRepository.find({
       where: { isActive: true },
-      order: { createdAt: 'asc' },
+      order: { createdAt: 'DESC' },
     });
   }
 }

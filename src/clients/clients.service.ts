@@ -46,7 +46,7 @@ export class ClientsService {
   getByAuthId(authId: string) {
     return this.clientsRepository.findOne({
       where: { auth: { id: authId } },
-      relations: ['auth'],
+      relations: ['auth', 'diet', 'owner', 'owner.auth'],
     });
   }
 
@@ -54,13 +54,13 @@ export class ClientsService {
     return this.clientsRepository.find({
       where: { owner: { id: auth.id } },
       relations: ['diet', 'auth'],
-      order: { auth: { createdAt: 'asc' } },
+      order: { auth: { createdAt: 'DESC' } },
     });
   }
 
   getAll() {
     return this.clientsRepository.find({
-      order: { auth: { createdAt: 'asc' } },
+      order: { auth: { createdAt: 'DESC' } },
     });
   }
 

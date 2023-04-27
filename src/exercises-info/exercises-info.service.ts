@@ -36,7 +36,7 @@ export class ExercisesInfoService {
   getAll() {
     return this.exerciseInfoRepository.find({
       where: { isActive: true },
-      order: { createdAt: 'asc' },
+      order: { createdAt: 'DESC' },
     });
   }
 
