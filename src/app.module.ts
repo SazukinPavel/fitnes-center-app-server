@@ -11,6 +11,7 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
 import { JwtService } from './services/jwt.service';
 import { ExercisesModule } from './exercises/exercises.module';
 import { DietsModule } from './diets/diets.module';
+import { CancellationModule } from './cancellation/cancellation.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { DietsModule } from './diets/diets.module';
     ExercisesInfoModule,
     ExercisesModule,
     DietsModule,
+    CancellationModule,
   ],
   providers: [JwtService],
 })

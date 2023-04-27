@@ -12,7 +12,6 @@ import { RolesGuard } from '../guards/auth.guard';
 import { ExercisesService } from './exercises.service';
 import AddExerciseDto from './dto/AddExercise.dto';
 import { GetUser, Roles } from '../decorators';
-import Auth from '../entities/auth.entity';
 import { User } from '../types/User';
 import UpdateIsPayed from './dto/UpdateIsPayed';
 
