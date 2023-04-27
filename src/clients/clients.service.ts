@@ -64,9 +64,17 @@ export class ClientsService {
     });
   }
 
-  async updateClient({ authId, id, fio, height, weight }: UpdateClientDto) {
+  async updateClient({
+    authId,
+    id,
+    fio,
+    height,
+    weight,
+    telephone,
+  }: UpdateClientDto) {
     await this.authService.update({
       fio,
+      telephone,
       id: authId,
     });
 

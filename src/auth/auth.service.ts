@@ -75,6 +75,7 @@ export class AuthService {
   }
 
   update(dto: UpdateAuthDto) {
+    console.log(dto);
     return this.authRepository.update(dto.id, dto);
   }
 

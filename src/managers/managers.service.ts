@@ -48,6 +48,7 @@ export class ManagersService {
     await this.authService.update({
       id: updateManagerDto.authId,
       fio: updateManagerDto.fio,
+      telephone: updateManagerDto.telephone,
     });
 
     return this.managerRepository.update(updateManagerDto.id, {
