@@ -12,6 +12,7 @@ import { JwtService } from './services/jwt.service';
 import { ExercisesModule } from './exercises/exercises.module';
 import { DietsModule } from './diets/diets.module';
 import { CancellationModule } from './cancellation/cancellation.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CancellationModule } from './cancellation/cancellation.module';
     ExercisesModule,
     DietsModule,
     CancellationModule,
+    MailModule,
   ],
   providers: [JwtService],
 })
