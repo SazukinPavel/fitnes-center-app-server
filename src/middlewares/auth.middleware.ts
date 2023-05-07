@@ -7,6 +7,7 @@ import Auth from '../entities/auth.entity';
 import { ClientsService } from '../clients/clients.service';
 import { ManagersService } from '../managers/managers.service';
 import { AdminsService } from '../admins/admins.service';
+import JwtAuthPayload from '../types/JwtAuthPayload';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -36,9 +37,7 @@ export class AuthMiddleware implements NestMiddleware {
     const token = req.headers['authorization']?.split(' ')[1];
     if (token) {
       try {
-        const parsedToken: { data: Auth } = this.jwtServise.verifyToken(
-          token,
-        ) as { data: Auth };
+        const parsedToken = this.jwtServise.verifyToken(token);
 
         const auth: Auth = await this.authService.getAuthByIdAndRole({
           id: parsedToken.data.id,

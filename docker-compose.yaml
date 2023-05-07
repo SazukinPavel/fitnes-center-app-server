@@ -1,9 +1,9 @@
 version: '3'
-services: 
+services:
   db:
     image: postgres
     restart: always
-    environment: 
+    environment:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
@@ -12,11 +12,11 @@ services:
     volumes:
       - pg-data:/pg-data
   nestjs:
-    build: 
+    build:
       context: .
       dockerfile: ./Dockerfile
     image: finess-app-server
-    environment: 
+    environment:
       - DB_HOST=${DB_HOST}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
@@ -25,12 +25,14 @@ services:
       - JWT_KEY=${JWT_KEY}
       - POSTGRES_PORT=${DB_HOST}
       - APP_PORT=${APP_PORT}
-    ports: 
-      - "4200:3000" 
+      - CLIENT_URL=${CLIENT_URL}
+      - RECREATE_JWT_KEY=${RECREATE_JWT_KEY}
+    ports:
+      - '4200:3000'
     container_name: fitness-app-server
-    depends_on: 
+    depends_on:
       - db
-    volumes: 
+    volumes:
       - .:/app
       - /app/node_modules
 volumes:
