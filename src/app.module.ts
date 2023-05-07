@@ -13,6 +13,7 @@ import { ExercisesModule } from './exercises/exercises.module';
 import { DietsModule } from './diets/diets.module';
 import { CancellationModule } from './cancellation/cancellation.module';
 import { MailModule } from './mail/mail.module';
+import { RecreatePassModule } from './recreate-pass/recreate-pass.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { MailModule } from './mail/mail.module';
     DietsModule,
     CancellationModule,
     MailModule,
+    RecreatePassModule,
   ],
   providers: [JwtService],
 })
