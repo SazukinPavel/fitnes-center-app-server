@@ -1,4 +1,9 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  Injectable,
+} from '@nestjs/common';
 import LoginDto from './dto/Login.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import Auth from '../entities/auth.entity';
@@ -10,12 +15,18 @@ import CreateAuthDto from './dto/CreateAuth.dto';
 import { User } from '../types/User';
 import UpdateAuthDto from './dto/UpdateAuth.dto';
 import ChangePasswordDto from './dto/ChangePassword.dto';
+import { MailService } from '../mail/mail.service';
+import RecreatePasswordDto from './dto/RecreatePassword.dto';
+import ForgetPasswordDto from './dto/ForgetPassword.dto';
+import { RecreatePassService } from '../recreate-pass/recreate-pass.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(Auth) private authRepository: Repository<Auth>,
-    private jwtService: JwtService,
+    @InjectRepository(Auth) private readonly authRepository: Repository<Auth>,
+    private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
+    private readonly recreatePassService: RecreatePassService,
   ) {}
 
   async login(loginDto: LoginDto) {
@@ -75,7 +86,6 @@ export class AuthService {
   }
 
   update(dto: UpdateAuthDto) {
-    console.log(dto);
     return this.authRepository.update(dto.id, dto);
   }
 
@@ -93,5 +103,34 @@ export class AuthService {
     } catch {
       throw new BadRequestException('Произошла ошибка при смене пароля');
     }
+  }
+
+  async forgetPassword({ login }: ForgetPasswordDto) {
+    const auth = await this.findAuthByLogin(login);
+    if (!auth) {
+      throw new BadRequestException(
+        'Пользователя с таким емэйлом не существует',
+      );
+    }
+
+    const token = this.jwtService.signRecreateToken(auth);
+    await this.recreatePassService.add({ token, login });
+    return this.mailService.recreatePassword(auth, token);
+  }
+
+  async recreatePassword({ password, token }: RecreatePasswordDto) {
+    const { data } = this.jwtService.verifyRecreateToken(token);
+    const [auth, recreateToken] = await Promise.all([
+      this.getAuthByIdAndRole(data),
+      this.recreatePassService.isExist(token),
+    ]);
+
+    if (!auth || !recreateToken) {
+      throw new ForbiddenException('Не валидный токен');
+    }
+
+    auth.password = password;
+    this.recreatePassService.delete(recreateToken.id);
+    return this.authRepository.update(auth.id, auth);
   }
 }
