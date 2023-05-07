@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { join } from 'path';
 import { MailerModule } from '@nestjs-modules/mailer';
+import * as process from 'process';
 
 @Module({
   imports: [
@@ -12,8 +13,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
         secure: true,
         port: 465,
         auth: {
-          user: 'p.sazikin@yandex.by',
-          pass: 'Sazukin95241234',
+          user: process.env.USER_MAIL,
+          pass: process.env.USER_PASS,
         },
       },
       defaults: {
