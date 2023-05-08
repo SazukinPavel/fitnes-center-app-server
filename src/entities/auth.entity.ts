@@ -4,10 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import Role from '../types/Role';
 import { hash } from 'bcryptjs';
+import Avatar from './avatar.entity';
 
 @Entity()
 export default class Auth {
@@ -34,6 +36,9 @@ export default class Auth {
 
   @CreateDateColumn()
   createdAt: string;
+
+  @OneToOne(() => Avatar, (avatar) => avatar.auth)
+  user: Avatar;
 
   @BeforeInsert()
   @BeforeUpdate()

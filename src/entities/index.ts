@@ -7,6 +7,7 @@ import ExerciseInfo from './exercise-info.entity';
 import Cancellation from './cancellation.entity.';
 import Exercise from './exercise.entity';
 import RecreatePass from './recreate-pass.entity';
+import Avatar from './avatar.entity';
 
 export default [
   Manager,
@@ -18,4 +19,5 @@ export default [
   Exercise,
   Cancellation,
   RecreatePass,
+  Avatar,
 ];
