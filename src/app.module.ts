@@ -14,6 +14,8 @@ import { DietsModule } from './diets/diets.module';
 import { CancellationModule } from './cancellation/cancellation.module';
 import { MailModule } from './mail/mail.module';
 import { RecreatePassModule } from './recreate-pass/recreate-pass.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -42,6 +44,9 @@ import { RecreatePassModule } from './recreate-pass/recreate-pass.module';
     CancellationModule,
     MailModule,
     RecreatePassModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static/'),
+    }),
   ],
   providers: [JwtService],
 })
