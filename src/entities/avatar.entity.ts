@@ -11,11 +11,11 @@ import Auth from './auth.entity';
 
 @Entity()
 export default class Avatar {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
-  ext: string;
+  name: string;
 
   @CreateDateColumn()
   createdAt: Date;

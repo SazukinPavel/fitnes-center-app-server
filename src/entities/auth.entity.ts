@@ -38,7 +38,7 @@ export default class Auth {
   createdAt: string;
 
   @OneToOne(() => Avatar, (avatar) => avatar.auth)
-  user: Avatar;
+  avatar: Avatar;
 
   @BeforeInsert()
   @BeforeUpdate()
