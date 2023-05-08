@@ -35,10 +35,11 @@ export class AuthMiddleware implements NestMiddleware {
 
   async use(req: AppRequest, res: Response, next: NextFunction) {
     const token = req.headers['authorization']?.split(' ')[1];
+    console.log(token);
     if (token) {
       try {
         const parsedToken = this.jwtServise.verifyToken(token);
-
+        console.log(parsedToken);
         const auth: Auth = await this.authService.getAuthByIdAndRole({
           id: parsedToken.data.id,
           role: parsedToken.data.role,

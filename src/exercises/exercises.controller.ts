@@ -33,6 +33,7 @@ export class ExercisesController {
   }
 
   @Get(':id')
+  @Roles('user')
   getById(@Param('id') id: string) {
     return this.exercisesService.getById(id);
   }
