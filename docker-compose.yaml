@@ -31,6 +31,7 @@ services:
       - RECREATE_JWT_KEY=${RECREATE_JWT_KEY}
       - USER_PASS=${USER_PASS}
       - USER_MAIL=${USER_MAIL}
+      - UPLOAD_LOCATION=${UPLOAD_LOCATION}
     ports:
       - '4200:3000'
     container_name: fitness-app-server
