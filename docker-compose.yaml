@@ -1,6 +1,7 @@
 version: '3'
 services:
   db:
+    user: root
     image: postgres
     restart: always
     environment:
@@ -8,10 +9,11 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
       - PGDATA= /pg-data
-    container_name: postgres-db
+    container_name: ${DB_HOST}
     volumes:
       - pg-data:/pg-data
   nestjs:
+    user: root
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -27,6 +29,8 @@ services:
       - APP_PORT=${APP_PORT}
       - CLIENT_URL=${CLIENT_URL}
       - RECREATE_JWT_KEY=${RECREATE_JWT_KEY}
+      - USER_PASS=${USER_PASS}
+      - USER_MAIL=${USER_MAIL}
     ports:
       - '4200:3000'
     container_name: fitness-app-server
@@ -35,6 +39,24 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+  pgadmin:
+    user: root
+    image: dpage/pgadmin4
+    restart: always
+    container_name: fitness-app-pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      - PGADMIN_LISTEN_PORT=${PGADMIN_LISTEN_PORT}
+      - POSTGRES_PASSWORD= ${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "4300:80"
+    volumes:
+      - ./pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - db
 volumes:
   pg-data:
   pgadmin-data:
