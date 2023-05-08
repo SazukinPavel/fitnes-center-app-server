@@ -16,6 +16,7 @@ import { MailModule } from './mail/mail.module';
 import { RecreatePassModule } from './recreate-pass/recreate-pass.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { AvatarsModule } from './avatars/avatars.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { join } from 'path';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'static/'),
     }),
+    AvatarsModule,
   ],
   providers: [JwtService],
 })
