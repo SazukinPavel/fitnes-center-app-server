@@ -52,7 +52,7 @@ export class AuthService {
     return this.getAuthorize({ auth: user } as User);
   }
 
-  getAuth(login: string) {
+  private getAuth(login: string) {
     return this.authRepository.findOne({ where: { login } });
   }
 
@@ -68,12 +68,19 @@ export class AuthService {
     return this.authRepository.delete({ id });
   }
 
-  findAuthByLogin(login: string) {
+  private findAuthByLogin(login: string) {
     return this.authRepository.findOneBy({ login });
   }
 
   getAuthByIdAndRole({ id, role }) {
     return this.authRepository.findOneBy({ id, role });
+  }
+
+  getAuthById(id: string) {
+    return this.authRepository.findOne({
+      where: { id },
+      relations: ['avatar'],
+    });
   }
 
   addAuth(dto: CreateAuthDto) {
