@@ -19,7 +19,7 @@ export class ManagersService {
 
   getAll() {
     return this.managerRepository.find({
-      relations: ['auth'],
+      relations: ['auth', 'auth.avatar'],
       order: { auth: { createdAt: 'DESC' } },
     });
   }
@@ -27,7 +27,7 @@ export class ManagersService {
   getByAuthId(authId: string) {
     return this.managerRepository.findOne({
       where: { auth: { id: authId } },
-      relations: ['auth'],
+      relations: ['auth', 'auth.avatar'],
     });
   }
 

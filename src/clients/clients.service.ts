@@ -39,21 +39,35 @@ export class ClientsService {
   getById(id: string) {
     return this.clientsRepository.findOne({
       where: { id },
-      relations: ['owner', 'diet', 'exercises', 'auth'],
+      relations: [
+        'owner',
+        'diet',
+        'exercises',
+        'auth.avatar',
+        'owner.auth',
+        'owner.auth.avatar',
+      ],
     });
   }
 
   getByAuthId(authId: string) {
     return this.clientsRepository.findOne({
       where: { auth: { id: authId } },
-      relations: ['auth', 'diet', 'owner', 'owner.auth'],
+      relations: [
+        'auth',
+        'diet',
+        'owner',
+        'owner.auth',
+        'owner.auth.avatar',
+        'auth.avatar',
+      ],
     });
   }
 
   getAllByManager(auth: Manager) {
     return this.clientsRepository.find({
       where: { owner: { id: auth.id } },
-      relations: ['diet', 'auth'],
+      relations: ['diet', 'auth', 'auth.avatar'],
       order: { auth: { createdAt: 'DESC' } },
     });
   }
