@@ -4,6 +4,9 @@ import { Repository } from 'typeorm';
 import Avatar from '../entities/avatar.entity';
 import AddAvatarDto from './dto/AddAvatar.dto';
 import { AuthService } from '../auth/auth.service';
+import * as fs from 'fs';
+import * as path from 'path';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AvatarsService {
@@ -11,17 +14,15 @@ export class AvatarsService {
     @InjectRepository(Avatar)
     private readonly avatarsRepo: Repository<Avatar>,
     private readonly authService: AuthService,
+    private readonly configService: ConfigService,
   ) {}
 
   async add(dto: AddAvatarDto) {
-    console.log(dto);
     const auth = await this.authService.getAuthById(dto.owner);
-    console.log(auth);
     if (!auth) {
       throw new BadRequestException('Такого пользователя несуществует');
     }
 
-    console.log(auth, 'auth');
     if (auth.avatar && auth.avatar.id) {
       await this.delete(auth.avatar.id);
     }
@@ -31,11 +32,19 @@ export class AvatarsService {
       name: dto.fileName,
     });
 
-    console.log('avatar', avatar);
     return this.avatarsRepo.save(avatar);
   }
 
-  delete(id: string) {
+  async delete(id: string) {
+    const avatar = await this.avatarsRepo.findOneBy({ id });
+    fs.unlink(
+      path.join(this.configService.get('UPLOAD_LOCATION'), avatar.name),
+      function (err) {
+        if (err) {
+          throw new BadRequestException(err.message);
+        }
+      },
+    );
     return this.avatarsRepo.delete(id);
   }
 }
