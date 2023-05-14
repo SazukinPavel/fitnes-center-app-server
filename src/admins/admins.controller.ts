@@ -12,7 +12,7 @@ import AddAdminDto from './dto/AddAdmin.dto';
 import { AdminsService } from './admins.service';
 
 @Controller('admins')
-// @UseGuards(RolesGuard)
+@UseGuards(RolesGuard)
 export class AdminsController {
   constructor(private adminsService: AdminsService) {}
   @Post()
