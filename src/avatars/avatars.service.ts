@@ -37,14 +37,17 @@ export class AvatarsService {
 
   async delete(id: string) {
     const avatar = await this.avatarsRepo.findOneBy({ id });
-    fs.unlink(
-      path.join(this.configService.get('UPLOAD_LOCATION'), avatar.name),
-      function (err) {
+    const avatarPath = path.join(
+      this.configService.get('UPLOAD_LOCATION'),
+      avatar.name,
+    );
+    if (fs.existsSync(avatarPath)) {
+      fs.unlink(avatarPath, function (err) {
         if (err) {
           throw new BadRequestException(err.message);
         }
-      },
-    );
+      });
+    }
     return this.avatarsRepo.delete(id);
   }
 }
