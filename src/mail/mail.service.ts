@@ -2,6 +2,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Auth from '../entities/auth.entity';
+import process from 'process';
 
 @Injectable()
 export class MailService {
@@ -17,7 +18,7 @@ export class MailService {
 
     await this.mailerService.sendMail({
       to: user.login,
-      from: '"Fitness app" <p.sazikin@yandex.by>',
+      from: `"Fitness app" ${this.configService.get('USER_MAIL')}`,
       subject: 'Востановление пароля',
       template: './recreatePassword',
       context: {
