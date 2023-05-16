@@ -4,10 +4,10 @@ import { Repository } from 'typeorm';
 import Avatar from '../entities/avatar.entity';
 import AddAvatarDto from './dto/AddAvatar.dto';
 import { AuthService } from '../auth/auth.service';
-import * as fs from 'fs';
 import * as path from 'path';
 import { ConfigService } from '@nestjs/config';
-
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const imgbbUploader = require('imgbb-uploader');
 @Injectable()
 export class AvatarsService {
   constructor(
@@ -27,27 +27,23 @@ export class AvatarsService {
       await this.delete(auth.avatar.id);
     }
 
+    const res = await imgbbUploader({
+      apiKey: this.configService.get('IMGDB_KEY'),
+      imagePath: path.join(
+        this.configService.get('UPLOAD_LOCATION'),
+        dto.fileName,
+      ),
+    });
+
     const avatar = this.avatarsRepo.create({
       auth: { id: dto.owner },
-      name: dto.fileName,
+      name: res.image.url,
     });
 
     return this.avatarsRepo.save(avatar);
   }
 
-  async delete(id: string) {
-    const avatar = await this.avatarsRepo.findOneBy({ id });
-    const avatarPath = path.join(
-      this.configService.get('UPLOAD_LOCATION'),
-      avatar.name,
-    );
-    if (fs.existsSync(avatarPath)) {
-      fs.unlink(avatarPath, function (err) {
-        if (err) {
-          throw new BadRequestException(err.message);
-        }
-      });
-    }
+  delete(id: string) {
     return this.avatarsRepo.delete(id);
   }
 }
