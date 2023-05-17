@@ -8,7 +8,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
-  app.enableCors({ origin: process.env.CLIENT_URL });
+  app.enableCors({ origin: '*' });
 
   const port = +process.env.APP_PORT || 3000;
   await app.listen(port);
