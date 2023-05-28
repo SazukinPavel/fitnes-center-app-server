@@ -8,7 +8,7 @@ import LoginDto from './dto/Login.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import Auth from '../entities/auth.entity';
 import { Repository } from 'typeorm';
-import { compare } from 'bcryptjs';
+import { compare, hash } from 'bcryptjs';
 import AuthorizeReponseDto from './dto/AuthorizeReponse.dto';
 import { JwtService } from '../services/jwt.service';
 import CreateAuthDto from './dto/CreateAuth.dto';
@@ -105,8 +105,16 @@ export class AuthService {
     }
 
     try {
-      user.auth.password = dto.newPassword;
-      await this.authRepository.update(user.auth.id, user.auth);
+      const saltRounds = 10;
+      const newPassword = await new Promise<string>((resolve, reject) => {
+        hash(dto.newPassword, saltRounds, function (err, hash) {
+          if (err) reject(err);
+          resolve(hash);
+        });
+      });
+      await this.authRepository.update(user.auth.id, {
+        password: newPassword,
+      });
     } catch {
       throw new BadRequestException('Произошла ошибка при смене пароля');
     }
