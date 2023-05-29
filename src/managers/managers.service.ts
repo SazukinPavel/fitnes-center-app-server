@@ -14,7 +14,10 @@ export class ManagersService {
   ) {}
 
   getById(id) {
-    return this.managerRepository.findOneBy({ id });
+    return this.managerRepository.findOne({
+      where: { id },
+      relations: ['auth'],
+    });
   }
 
   getAll() {
@@ -57,10 +60,10 @@ export class ManagersService {
   }
 
   async delete(id: string) {
-    const mamager = await this.getById(id);
+    const manager = await this.getById(id);
 
     const result = await this.managerRepository.delete(id);
-    await this.authService.deleteAuthById(mamager.auth.id);
+    await this.authService.deleteAuthById(manager.auth.id);
     return result;
   }
 

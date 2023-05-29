@@ -16,7 +16,6 @@ import AddManagerDto from './dto/AddManager.dto';
 import UpdateManagerDto from './dto/UpdateManager.dto';
 import PatchDescriptionDto from './dto/PatchDescription.dto';
 import { GetUser, Roles } from '../decorators';
-import Auth from '../entities/auth.entity';
 import { User } from '../types/User';
 
 @Controller('managers')
