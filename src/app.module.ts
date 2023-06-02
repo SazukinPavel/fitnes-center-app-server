@@ -17,6 +17,7 @@ import { RecreatePassModule } from './recreate-pass/recreate-pass.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AvatarsModule } from './avatars/avatars.module';
+import LogsMiddleware from './middlewares/logs.middleware';
 
 @Module({
   imports: [
@@ -54,6 +55,6 @@ import { AvatarsModule } from './avatars/avatars.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('*');
+    consumer.apply(LogsMiddleware, AuthMiddleware).forRoutes('*');
   }
 }
