@@ -1,24 +1,25 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import Diet from '../entities/diet.entity';
-import AddDietDto from './dto/AddDiet.dto';
-import UpdateDietDto from './dto/UpdateDiet.dto';
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import Diet from "../entities/diet.entity";
+import AddDietDto from "./dto/AddDiet.dto";
+import UpdateDietDto from "./dto/UpdateDiet.dto";
 
 @Injectable()
 export class DietsService {
   constructor(
-    @InjectRepository(Diet) private dietsRepository: Repository<Diet>,
-  ) {}
+    @InjectRepository(Diet) private dietsRepository: Repository<Diet>
+  ) {
+  }
 
   async add(addDietDto: AddDietDto) {
     const existedDiet = await this.dietsRepository.findOneBy({
       isActive: true,
-      name: addDietDto.name,
+      name: addDietDto.name
     });
 
     if (existedDiet) {
-      throw new BadRequestException('Диета с таким именем уже существует');
+      throw new BadRequestException("Диета с таким именем уже существует");
     }
 
     const diet = this.dietsRepository.create({ ...addDietDto });
@@ -41,7 +42,7 @@ export class DietsService {
   getAll() {
     return this.dietsRepository.find({
       where: { isActive: true },
-      order: { createdAt: 'DESC' },
+      order: { createdAt: "DESC" }
     });
   }
 }

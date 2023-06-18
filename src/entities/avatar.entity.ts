@@ -5,9 +5,9 @@ import {
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import Auth from './auth.entity';
+  UpdateDateColumn
+} from "typeorm";
+import Auth from "./auth.entity";
 
 @Entity()
 export default class Avatar {

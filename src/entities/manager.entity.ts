@@ -1,35 +1,28 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import Role from '../types/Role';
-import Client from './client.entity';
-import Auth from './auth.entity';
-import Exercise from './exercise.entity';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import Role from "../types/Role";
+import Client from "./client.entity";
+import Auth from "./auth.entity";
+import Exercise from "./exercise.entity";
 
 @Entity()
 export default class Manager {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  readonly role: Role = 'manager';
+  readonly role: Role = "manager";
 
-  @OneToOne(() => Auth, { cascade: true, onDelete: 'CASCADE' })
+  @OneToOne(() => Auth, { cascade: true, onDelete: "CASCADE" })
   @JoinColumn()
   auth: Auth;
 
   @Column({ nullable: true })
   description: string;
 
-  @OneToMany(() => Client, (client) => client.owner, { onDelete: 'CASCADE' })
+  @OneToMany(() => Client, (client) => client.owner, { onDelete: "CASCADE" })
   clients: Client[];
 
   @OneToMany(() => Exercise, (exercise) => exercise.manager, {
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE"
   })
   @JoinColumn()
   exercises: Exercise[];

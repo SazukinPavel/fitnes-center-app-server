@@ -5,11 +5,11 @@ import {
   CreateDateColumn,
   Entity,
   OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import Role from '../types/Role';
-import { hash } from 'bcryptjs';
-import Avatar from './avatar.entity';
+  PrimaryGeneratedColumn
+} from "typeorm";
+import Role from "../types/Role";
+import { hash } from "bcryptjs";
+import Avatar from "./avatar.entity";
 
 @Entity()
 export default class Auth {
@@ -47,7 +47,7 @@ export default class Auth {
       const saltRounds = 10;
 
       this.password = await new Promise((resolve, reject) => {
-        hash(this.password, saltRounds, function (err, hash) {
+        hash(this.password, saltRounds, function(err, hash) {
           if (err) reject(err);
           resolve(hash);
         });

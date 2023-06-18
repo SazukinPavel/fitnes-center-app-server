@@ -1,11 +1,11 @@
-import { extname } from 'path';
-import { existsSync, mkdirSync } from 'fs';
-import { diskStorage } from 'multer';
-import { v4 as uuid } from 'uuid';
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { extname } from "path";
+import { existsSync, mkdirSync } from "fs";
+import { diskStorage } from "multer";
+import { v4 as uuid } from "uuid";
+import { HttpException, HttpStatus } from "@nestjs/common";
 
 export const multerConfig = {
-  dest: process.env.UPLOAD_LOCATION,
+  dest: process.env.UPLOAD_LOCATION
 };
 
 export const multerOptions = {
@@ -19,9 +19,9 @@ export const multerOptions = {
       cb(
         new HttpException(
           `Неподдерживаемый тип файла ${extname(file.originalname)}`,
-          HttpStatus.BAD_REQUEST,
+          HttpStatus.BAD_REQUEST
         ),
-        false,
+        false
       );
     }
   },
@@ -35,6 +35,6 @@ export const multerOptions = {
     },
     filename: (req: any, file: any, cb: any) => {
       cb(null, `${uuid()}${extname(file.originalname)}`);
-    },
-  }),
+    }
+  })
 };

@@ -1,9 +1,9 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import Exercise from './exercise.entity';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import Exercise from "./exercise.entity";
 
 @Entity()
 export default class Cancellation {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()

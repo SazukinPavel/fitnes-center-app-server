@@ -1,30 +1,31 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import Admin from '../entities/admin.entity';
-import AddAdminDto from './dto/AddAdmin.dto';
-import { AuthService } from '../auth/auth.service';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import Admin from "../entities/admin.entity";
+import AddAdminDto from "./dto/AddAdmin.dto";
+import { AuthService } from "../auth/auth.service";
 
 @Injectable()
 export class AdminsService {
   constructor(
     @InjectRepository(Admin) private adminRepository: Repository<Admin>,
-    private authService: AuthService,
-  ) {}
+    private authService: AuthService
+  ) {
+  }
 
   async add(addAdminDto: AddAdminDto) {
     await this.authService.checkIsLoginBlocked(addAdminDto.login);
     const auth = await this.authService.addAuth({
       ...addAdminDto,
-      role: 'admin',
-      fio: '',
-      telephone: '',
+      role: "admin",
+      fio: "",
+      telephone: ""
     });
 
     const admin = this.adminRepository.create({
       ...addAdminDto,
-      role: 'admin',
-      auth,
+      role: "admin",
+      auth
     });
 
     return await this.adminRepository.save(admin);
@@ -44,7 +45,7 @@ export class AdminsService {
   getByAuthId(authId: string) {
     return this.adminRepository.findOne({
       where: { auth: { id: authId } },
-      relations: ['auth'],
+      relations: ["auth"]
     });
   }
 }

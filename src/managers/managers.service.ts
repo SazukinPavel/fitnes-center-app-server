@@ -1,36 +1,37 @@
-import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import Manager from '../entities/manager.entity';
-import AddManagerDto from './dto/AddManager.dto';
-import UpdateManagerDto from './dto/UpdateManager.dto';
-import { AuthService } from '../auth/auth.service';
+import { Injectable } from "@nestjs/common";
+import { Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import Manager from "../entities/manager.entity";
+import AddManagerDto from "./dto/AddManager.dto";
+import UpdateManagerDto from "./dto/UpdateManager.dto";
+import { AuthService } from "../auth/auth.service";
 
 @Injectable()
 export class ManagersService {
   constructor(
     @InjectRepository(Manager) private managerRepository: Repository<Manager>,
-    private authService: AuthService,
-  ) {}
+    private authService: AuthService
+  ) {
+  }
 
   getById(id) {
     return this.managerRepository.findOne({
       where: { id },
-      relations: ['auth'],
+      relations: ["auth"]
     });
   }
 
   getAll() {
     return this.managerRepository.find({
-      relations: ['auth', 'auth.avatar'],
-      order: { auth: { createdAt: 'DESC' } },
+      relations: ["auth", "auth.avatar"],
+      order: { auth: { createdAt: "DESC" } }
     });
   }
 
   getByAuthId(authId: string) {
     return this.managerRepository.findOne({
       where: { auth: { id: authId } },
-      relations: ['auth', 'auth.avatar'],
+      relations: ["auth", "auth.avatar"]
     });
   }
 
@@ -39,7 +40,7 @@ export class ManagersService {
 
     const auth = await this.authService.addAuth({
       ...addManagerDto,
-      role: 'manager',
+      role: "manager"
     });
 
     const manager = this.managerRepository.create({ ...addManagerDto, auth });
@@ -51,11 +52,11 @@ export class ManagersService {
     await this.authService.update({
       id: updateManagerDto.authId,
       fio: updateManagerDto.fio,
-      telephone: updateManagerDto.telephone,
+      telephone: updateManagerDto.telephone
     });
 
     return this.managerRepository.update(updateManagerDto.id, {
-      description: updateManagerDto.description,
+      description: updateManagerDto.description
     });
   }
 

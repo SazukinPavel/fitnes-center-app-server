@@ -1,11 +1,5 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  CreateDateColumn,
-} from 'typeorm';
-import Exercise from './exercise.entity';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import Exercise from "./exercise.entity";
 
 @Entity()
 export default class ExerciseInfo {

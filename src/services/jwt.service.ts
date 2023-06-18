@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { sign, verify } from 'jsonwebtoken';
-import Auth from '../entities/auth.entity';
-import JwtAuthPayload from '../types/JwtAuthPayload';
+import { Injectable } from "@nestjs/common";
+import { sign, verify } from "jsonwebtoken";
+import Auth from "../entities/auth.entity";
+import JwtAuthPayload from "../types/JwtAuthPayload";
 
 @Injectable()
 export class JwtService {
@@ -9,9 +9,9 @@ export class JwtService {
     return sign(
       {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
-        data: { role: auth.role, id: auth.id },
+        data: { role: auth.role, id: auth.id }
       },
-      process.env.JWT_KEY,
+      process.env.JWT_KEY
     );
   }
 
@@ -19,9 +19,9 @@ export class JwtService {
     return sign(
       {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 1,
-        data: { role: auth.role, id: auth.id },
+        data: { role: auth.role, id: auth.id }
       },
-      process.env.RECREATE_JWT_KEY,
+      process.env.RECREATE_JWT_KEY
     );
   }
 

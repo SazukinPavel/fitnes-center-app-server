@@ -1,4 +1,4 @@
-import { IsDate, IsString, IsUUID } from 'class-validator';
+import { IsString } from "class-validator";
 
 export default class AddExerciseDto {
   @IsString()

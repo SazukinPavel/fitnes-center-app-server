@@ -1,36 +1,33 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import Client from '../entities/client.entity';
-import AddClientDto from './dto/AddClient.dto';
-import UpdateClientDto from './dto/UpdateClient.dto';
-import SetDietDto from './dto/SetDiet.dto';
-import { AuthService } from '../auth/auth.service';
-import { Repository } from 'typeorm';
-import Manager from '../entities/manager.entity';
+import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import Client from "../entities/client.entity";
+import AddClientDto from "./dto/AddClient.dto";
+import UpdateClientDto from "./dto/UpdateClient.dto";
+import SetDietDto from "./dto/SetDiet.dto";
+import { AuthService } from "../auth/auth.service";
+import { Repository } from "typeorm";
+import Manager from "../entities/manager.entity";
 
 @Injectable()
 export class ClientsService {
   constructor(
     @InjectRepository(Client) private clientsRepository: Repository<Client>,
-    private authService: AuthService,
-  ) {}
+    private authService: AuthService
+  ) {
+  }
 
   async add(addClientDto: AddClientDto, manager: Manager) {
     await this.authService.checkIsLoginBlocked(addClientDto.login);
 
     const auth = await this.authService.addAuth({
       ...addClientDto,
-      role: 'client',
+      role: "client"
     });
 
     const client = this.clientsRepository.create({
       ...addClientDto,
       owner: manager,
-      auth,
+      auth
     });
 
     return this.clientsRepository.save(client);
@@ -40,13 +37,13 @@ export class ClientsService {
     return this.clientsRepository.findOne({
       where: { id },
       relations: [
-        'owner',
-        'diet',
-        'exercises',
-        'auth.avatar',
-        'owner.auth',
-        'owner.auth.avatar',
-      ],
+        "owner",
+        "diet",
+        "exercises",
+        "auth.avatar",
+        "owner.auth",
+        "owner.auth.avatar"
+      ]
     });
   }
 
@@ -54,47 +51,47 @@ export class ClientsService {
     return this.clientsRepository.findOne({
       where: { auth: { id: authId } },
       relations: [
-        'auth',
-        'diet',
-        'owner',
-        'owner.auth',
-        'owner.auth.avatar',
-        'auth.avatar',
-      ],
+        "auth",
+        "diet",
+        "owner",
+        "owner.auth",
+        "owner.auth.avatar",
+        "auth.avatar"
+      ]
     });
   }
 
   getAllByManager(auth: Manager) {
     return this.clientsRepository.find({
       where: { owner: { id: auth.id } },
-      relations: ['diet', 'auth', 'auth.avatar'],
-      order: { auth: { createdAt: 'DESC' } },
+      relations: ["diet", "auth", "auth.avatar"],
+      order: { auth: { createdAt: "DESC" } }
     });
   }
 
   getAll() {
     return this.clientsRepository.find({
-      order: { auth: { createdAt: 'DESC' } },
+      order: { auth: { createdAt: "DESC" } }
     });
   }
 
   async updateClient({
-    authId,
-    id,
-    fio,
-    height,
-    weight,
-    telephone,
-  }: UpdateClientDto) {
+                       authId,
+                       id,
+                       fio,
+                       height,
+                       weight,
+                       telephone
+                     }: UpdateClientDto) {
     await this.authService.update({
       fio,
       telephone,
-      id: authId,
+      id: authId
     });
 
     return this.clientsRepository.update(id, {
       height,
-      weight,
+      weight
     });
   }
 
@@ -106,11 +103,11 @@ export class ClientsService {
     const client = await this.getById(id);
 
     if (!client) {
-      throw new NotFoundException('User with this id not founded!');
+      throw new NotFoundException("User with this id not founded!");
     }
 
     if (client.owner.id != managerId) {
-      throw new ForbiddenException('You not owner of this client!');
+      throw new ForbiddenException("You not owner of this client!");
     }
     return this.deleteWithoutCheck(id);
   }

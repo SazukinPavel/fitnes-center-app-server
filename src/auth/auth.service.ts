@@ -1,24 +1,19 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  HttpException,
-  Injectable,
-} from '@nestjs/common';
-import LoginDto from './dto/Login.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import Auth from '../entities/auth.entity';
-import { Repository } from 'typeorm';
-import { compare, hash } from 'bcryptjs';
-import AuthorizeReponseDto from './dto/AuthorizeReponse.dto';
-import { JwtService } from '../services/jwt.service';
-import CreateAuthDto from './dto/CreateAuth.dto';
-import { User } from '../types/User';
-import UpdateAuthDto from './dto/UpdateAuth.dto';
-import ChangePasswordDto from './dto/ChangePassword.dto';
-import { MailService } from '../mail/mail.service';
-import RecreatePasswordDto from './dto/RecreatePassword.dto';
-import ForgetPasswordDto from './dto/ForgetPassword.dto';
-import { RecreatePassService } from '../recreate-pass/recreate-pass.service';
+import { BadRequestException, ForbiddenException, HttpException, Injectable } from "@nestjs/common";
+import LoginDto from "./dto/Login.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import Auth from "../entities/auth.entity";
+import { Repository } from "typeorm";
+import { compare, hash } from "bcryptjs";
+import AuthorizeReponseDto from "./dto/AuthorizeReponse.dto";
+import { JwtService } from "../services/jwt.service";
+import CreateAuthDto from "./dto/CreateAuth.dto";
+import { User } from "../types/User";
+import UpdateAuthDto from "./dto/UpdateAuth.dto";
+import ChangePasswordDto from "./dto/ChangePassword.dto";
+import { MailService } from "../mail/mail.service";
+import RecreatePasswordDto from "./dto/RecreatePassword.dto";
+import ForgetPasswordDto from "./dto/ForgetPassword.dto";
+import { RecreatePassService } from "../recreate-pass/recreate-pass.service";
 
 @Injectable()
 export class AuthService {
@@ -26,18 +21,19 @@ export class AuthService {
     @InjectRepository(Auth) private readonly authRepository: Repository<Auth>,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
-    private readonly recreatePassService: RecreatePassService,
-  ) {}
+    private readonly recreatePassService: RecreatePassService
+  ) {
+  }
 
   async login(loginDto: LoginDto) {
     const user = await this.getAuth(loginDto.login);
 
     if (!user) {
-      throw new HttpException('Wrong creditianals', 401);
+      throw new HttpException("Wrong creditianals", 401);
     }
 
     const isPasswordCorrect = await new Promise<boolean>((resolve, reject) => {
-      compare(loginDto.password, user.password, function (err, result) {
+      compare(loginDto.password, user.password, function(err, result) {
         if (err) {
           reject(err);
         }
@@ -46,7 +42,7 @@ export class AuthService {
     });
 
     if (!isPasswordCorrect) {
-      throw new HttpException('Wrong password', 401);
+      throw new HttpException("Wrong password", 401);
     }
 
     return this.getAuthorize({ auth: user } as User);
@@ -59,7 +55,7 @@ export class AuthService {
   async checkIsLoginBlocked(login: string) {
     if (await this.findAuthByLogin(login)) {
       throw new BadRequestException(
-        'Пользователь с таким логином уже существует.',
+        "Пользователь с таким логином уже существует."
       );
     }
   }
@@ -79,7 +75,7 @@ export class AuthService {
   getAuthById(id: string) {
     return this.authRepository.findOne({
       where: { id },
-      relations: ['avatar'],
+      relations: ["avatar"]
     });
   }
 
@@ -100,23 +96,23 @@ export class AuthService {
     const isPasswordEqual = await compare(dto.oldPassword, user.auth.password);
     if (!isPasswordEqual) {
       throw new BadRequestException(
-        'Старый пароль не совпадает с действительным.',
+        "Старый пароль не совпадает с действительным."
       );
     }
 
     try {
       const saltRounds = 10;
       const newPassword = await new Promise<string>((resolve, reject) => {
-        hash(dto.newPassword, saltRounds, function (err, hash) {
+        hash(dto.newPassword, saltRounds, function(err, hash) {
           if (err) reject(err);
           resolve(hash);
         });
       });
       await this.authRepository.update(user.auth.id, {
-        password: newPassword,
+        password: newPassword
       });
     } catch {
-      throw new BadRequestException('Произошла ошибка при смене пароля');
+      throw new BadRequestException("Произошла ошибка при смене пароля");
     }
   }
 
@@ -124,7 +120,7 @@ export class AuthService {
     const auth = await this.findAuthByLogin(login);
     if (!auth) {
       throw new BadRequestException(
-        'Пользователя с таким емэйлом не существует',
+        "Пользователя с таким емэйлом не существует"
       );
     }
 
@@ -137,11 +133,11 @@ export class AuthService {
     const { data } = this.jwtService.verifyRecreateToken(token);
     const [auth, recreateToken] = await Promise.all([
       this.getAuthByIdAndRole(data),
-      this.recreatePassService.isExist(token),
+      this.recreatePassService.isExist(token)
     ]);
 
     if (!auth || !recreateToken) {
-      throw new ForbiddenException('Не валидный токен');
+      throw new ForbiddenException("Не валидный токен");
     }
 
     auth.password = password;

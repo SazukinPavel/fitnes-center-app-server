@@ -1,16 +1,8 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  JoinColumn,
-  CreateDateColumn,
-  OneToOne,
-} from 'typeorm';
-import Client from './client.entity';
-import ExerciseInfo from './exercise-info.entity';
-import Manager from './manager.entity';
-import Cancellation from './cancellation.entity.';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import Client from "./client.entity";
+import ExerciseInfo from "./exercise-info.entity";
+import Manager from "./manager.entity";
+import Cancellation from "./cancellation.entity.";
 
 @Entity()
 export default class Exercise {
@@ -32,14 +24,14 @@ export default class Exercise {
   @CreateDateColumn()
   createdAt: string;
 
-  @OneToOne(() => Cancellation, { onDelete: 'CASCADE' })
+  @OneToOne(() => Cancellation, { onDelete: "CASCADE" })
   @JoinColumn()
   cancellation: Cancellation;
 
-  @ManyToOne(() => Client, (client) => client.exercises)
+  @ManyToOne(() => Client, (client) => client.exercises, { onDelete: "CASCADE" })
   client: Client;
 
-  @ManyToOne(() => Manager, (manager) => manager.exercises)
+  @ManyToOne(() => Manager, (manager) => manager.exercises, { onDelete: "CASCADE" })
   manager: Manager;
 
   @ManyToOne(() => ExerciseInfo, (exerciseInfo) => exerciseInfo.exercises)
