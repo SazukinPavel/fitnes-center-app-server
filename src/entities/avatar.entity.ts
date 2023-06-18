@@ -23,7 +23,7 @@ export default class Avatar {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToOne(() => Auth)
+  @OneToOne(() => Auth,{ onDelete:'CASCADE' })
   @JoinColumn()
   auth: Auth;
 }
