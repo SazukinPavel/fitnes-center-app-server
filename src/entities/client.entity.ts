@@ -7,10 +7,10 @@ import Exercise from "./exercise.entity";
 
 @Entity()
 export default class Client {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  readonly role: Role = "client";
+  readonly role: Role = 'client';
 
   @Column({ nullable: true })
   weight: string;
@@ -22,7 +22,9 @@ export default class Client {
   @JoinColumn()
   auth: Auth;
 
-  @ManyToOne(() => Manager, (Manager) => Manager.clients)
+  @ManyToOne(() => Manager, (Manager) => Manager.clients, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   owner: Manager;
 
@@ -30,7 +32,7 @@ export default class Client {
   diet: Diet;
 
   @OneToMany(() => Exercise, (exercise) => exercise.client, {
-    onDelete: "CASCADE"
+    onDelete: 'CASCADE',
   })
   @JoinColumn()
   exercises: Exercise[];
